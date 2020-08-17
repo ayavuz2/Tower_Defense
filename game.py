@@ -22,12 +22,13 @@ class Game:
 		
 		while run:
 			clock.tick(30)
-			pygame.time.delay(500)
+			# pygame.time.delay(50)
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					run = False
 
 				pos = pygame.mouse.get_pos()
+				print(pos)
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
 					pass

@@ -6,6 +6,8 @@ from .enemy import Enemy
 class Scorpion(Enemy):
 	def __init__(self):
 		super().__init__()
+		self.max_health = 1
+		self.health = self.max_health
 
 		self.imgs = []
 		for x in range(20):

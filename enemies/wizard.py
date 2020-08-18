@@ -6,7 +6,9 @@ from .enemy import Enemy
 class Wizard(Enemy):
 	def __init__(self):
 		super().__init__()
-
+		self.max_health = 3
+		self.health = self.max_health
+		
 		self.imgs = []
 		for x in range(20):
 			add_str = str(x)

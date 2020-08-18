@@ -12,6 +12,7 @@ class ArcherTowerLong(Tower):
 		self.archer_count = 0
 		self.range = 200
 		self.inRange = False
+		self.left = False
 
 		# load archer tower imgs
 		for x in range(4):
@@ -28,7 +29,7 @@ class ArcherTowerLong(Tower):
 	def draw(self, win):
 		# draw range circle
 		surface = pygame.Surface((self.range*2, self.range*2), pygame.SRCALPHA, 32)
-		pygame.draw.circle(surface, (0,0,255, 128), (self.range, self.range), self.range, 0)
+		pygame.draw.circle(surface, (128,128,128, 100), (self.range, self.range), self.range, 0)
 
 		win.blit(surface, (self.x - self.range, self.y - self.range))
 		
@@ -68,3 +69,17 @@ class ArcherTowerLong(Tower):
 			if dis < self.range:
 				self.inRange = True
 				enemy_closest.append(enemy)
+
+		enemy_closest.sort(key = lambda x: x.x)
+		if len(enemy_closest) > 0:
+			first_enemy = enemy_closest[0]
+
+			if first_enemy.x < self.x and not self.left:
+				self.left = True
+				for x, img in enumerate(self.archer_imgs):
+					self.archer_imgs[x] = pygame.transform.flip(img, True, False)
+			
+			elif first_enemy.x > self.x and self.left:
+				self.left = False
+				for x, img in enumerate(self.archer_imgs):
+					self.archer_imgs[x] = pygame.transform.flip(img, True, False)	

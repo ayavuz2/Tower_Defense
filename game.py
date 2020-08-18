@@ -45,6 +45,10 @@ class Game:
 			for d in to_del:
 				self.enemies.remove(d)
 
+			# loop through towers
+			for tw in self.towers:
+				tw.attack(self.enemies)
+
 			self.draw()
 
 		pygame.quit()

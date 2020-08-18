@@ -12,5 +12,6 @@ class Wizard(Enemy):
 			add_str = str(x)
 			if x < 10:
 				add_str = "0" + add_str
-			self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("game_assets/enemies/2", "2_enemies_1_run_0" + add_str + ".png")), (64, 64)))
-			
+			self.imgs.append(pygame.transform.scale(
+				pygame.image.load(os.path.join("game_assets/enemies/2", "2_enemies_1_run_0" + add_str + ".png")), 
+				(64, 64)))

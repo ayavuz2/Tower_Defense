@@ -9,7 +9,7 @@ class Game:
 		self.width = 1100
 		self.height = 700
 		self.win = pygame.display.set_mode((self.width, self.height))
-		self.enemies = [Scorpion(), Wizard()]
+		self.enemies = [Wizard()]
 		self.towers = []
 		self.lives = 10
 		self.money = 100
@@ -19,6 +19,7 @@ class Game:
 	def run(self):
 		run = True
 		clock = pygame.time.Clock()
+		tmp = []
 		
 		while run:
 			clock.tick(30)
@@ -28,10 +29,10 @@ class Game:
 					run = False
 
 				pos = pygame.mouse.get_pos()
-				print(pos)
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
-					pass
+					tmp.append(pos)
+					print(tmp)
 
 			# loop through enemies
 			to_del = []

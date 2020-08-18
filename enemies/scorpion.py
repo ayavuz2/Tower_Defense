@@ -13,3 +13,4 @@ class Scorpion(Enemy):
 			if x < 10:
 				add_str = "0" + add_str
 			self.imgs.append(pygame.transform.scale(pygame.image.load(os.path.join("game_assets/enemies/1", "1_enemies_1_run_0" + add_str + ".png")), (32, 32)))
+			

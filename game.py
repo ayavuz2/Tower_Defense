@@ -1,5 +1,7 @@
 import pygame
 import os
+import time
+import random
 from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
 from towers.archerTower import ArcherTowerLong
@@ -16,15 +18,19 @@ class Game:
 		self.money = 100
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
 		self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
+		self.timer = time.time()
 
 	def run(self):
 		run = True
 		clock = pygame.time.Clock()
-		tmp = []
-		
+				
 		while run:
 			clock.tick(30)
-			# pygame.time.delay(50)
+
+			if time.time() - self.timer >= 2:
+				self.timer = time.time()
+				self.enemies.append(random.choice((Wizard(), Scorpion())))
+
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					run = False
@@ -32,8 +38,7 @@ class Game:
 				pos = pygame.mouse.get_pos()
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
-					tmp.append(pos)
-					print(tmp)
+					pass
 
 			# loop through enemies
 			to_del = []

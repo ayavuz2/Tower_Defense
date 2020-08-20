@@ -1,6 +1,7 @@
 import pygame
 import os
 import math
+import time
 from .tower import Tower
 
 
@@ -13,6 +14,7 @@ class ArcherTowerLong(Tower):
 		self.range = 200
 		self.inRange = False
 		self.left = False
+		self.timer = time.time()
 
 		# load archer tower imgs
 		for x in range(4):
@@ -73,6 +75,11 @@ class ArcherTowerLong(Tower):
 		enemy_closest.sort(key = lambda x: x.x)
 		if len(enemy_closest) > 0:
 			first_enemy = enemy_closest[0]
+
+			if time.time() - self.timer >= 0.5:
+				self.timer = time.time()
+				if first_enemy.hit() == True:
+					enemies.remove(first_enemy)
 
 			if first_enemy.x < self.x and not self.left:
 				self.left = True

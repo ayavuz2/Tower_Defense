@@ -151,3 +151,4 @@ class Enemy:
 		self.health -= 1
 		if self.health <= 0:
 			return True
+		return False

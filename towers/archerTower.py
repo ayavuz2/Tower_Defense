@@ -15,6 +15,7 @@ class ArcherTowerLong(Tower):
 		self.inRange = False
 		self.left = False
 		self.timer = time.time()
+		self.damage = 1
 
 		# load archer tower imgs
 		for x in range(4):

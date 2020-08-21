@@ -13,7 +13,7 @@ class Game:
 		self.height = 700
 		self.win = pygame.display.set_mode((self.width, self.height))
 		self.enemies = [Wizard()]
-		self.towers = [ArcherTowerLong(300,300)]
+		self.towers = [ArcherTowerLong(300,300), ArcherTowerLong(600,300)]
 		self.lives = 10
 		self.money = 100
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
@@ -27,7 +27,7 @@ class Game:
 		while run:
 			clock.tick(30)
 
-			if time.time() - self.timer >= 2:
+			if time.time() - self.timer >= random.randrange(2, 5)/2:
 				self.timer = time.time()
 				self.enemies.append(random.choice((Wizard(), Scorpion())))
 

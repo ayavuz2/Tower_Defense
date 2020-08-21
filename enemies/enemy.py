@@ -46,7 +46,7 @@ class Enemy:
 		:param win: surface
 		:return: None
 		"""
-		length = 50
+		length = 40
 		move_by = round(length) / self.max_health
 		health_bar = move_by * self.health
 
@@ -96,7 +96,7 @@ class Enemy:
 				self.left = False
 				self.check = False
 
-		move_x, move_y = (self.x + dirn[0]*7, self.y + dirn[1]*7) # multiply dirn with int make enemies go faster!
+		move_x, move_y = (self.x + dirn[0]*3, self.y + dirn[1]*3) # multiply dirn with int make enemies go faster!
 		self.dis += length
 
 		self.x = move_x

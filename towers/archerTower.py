@@ -31,6 +31,7 @@ class ArcherTowerLong(Tower):
 		self.left = False
 		self.timer = time.time()
 		self.damage = 1
+		self.animation_speed_multiplier = 3
 
 	def draw(self, win):
 		# draw range circle
@@ -43,12 +44,12 @@ class ArcherTowerLong(Tower):
 
 		if self.inRange:
 			self.archer_count += 1
-			if self.archer_count >= len(self.archer_imgs)*3:
+			if self.archer_count >= len(self.archer_imgs)*self.animation_speed_multiplier:
 				self.archer_count = 0
 		else:
 			self.archer_count = 0
 
-		archer = self.archer_imgs[self.archer_count//3]
+		archer = self.archer_imgs[self.archer_count//self.animation_speed_multiplier]
 		win.blit(archer, ((self.x + self.width/2) - (archer.get_width()/2), (self.y - archer.get_height())))
 
 
@@ -98,7 +99,7 @@ class ArcherTowerLong(Tower):
 
 archer_imgs2 = []
 # load archer imgs
-for x in range(6): 
+for x in range(16): 
 	archer_imgs2.append(pygame.transform.scale(
 		pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
 		(96, 96)))
@@ -115,3 +116,4 @@ class ArcherTowerShort(ArcherTowerLong):
 		self.left = False
 		self.timer = time.time()
 		self.damage = 2
+		self.animation_speed_multiplier = 1

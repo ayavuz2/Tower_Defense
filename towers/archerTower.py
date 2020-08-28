@@ -5,29 +5,32 @@ import time
 from .tower import Tower
 
 
+
+tower_imgs = []
+archer_imgs1 = []
+# load archer tower imgs
+for x in range(4):
+	tower_imgs.append(pygame.transform.scale(
+		pygame.image.load(os.path.join("game_assets/towers/archer_towers/1", str(x) + ".png")), 
+		(96, 96)))
+
+# load archer imgs
+for x in range(6): # change the archer img! 2000x1050 is too big to do proper scaling 
+	archer_imgs1.append(pygame.transform.scale(
+		pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_1", str(x) + ".png")), 
+		(96, 96)))
+
 class ArcherTowerLong(Tower):
 	def __init__(self, x, y):
 		super().__init__(x, y)
-		# self.tower_imgs = []
-		self.archer_imgs = []
+		self.tower_imgs = tower_imgs[:]
+		self.archer_imgs = archer_imgs1[:]
 		self.archer_count = 0
 		self.range = 200
 		self.inRange = False
 		self.left = False
 		self.timer = time.time()
 		self.damage = 1
-
-		# load archer tower imgs
-		for x in range(4):
-			self.tower_imgs.append(pygame.transform.scale(
-				pygame.image.load(os.path.join("game_assets/towers/archer_towers/1", str(x) + ".png")), 
-				(96, 96)))
-
-		# load archer imgs
-		for x in range(6): # change the archer img! 2000x1050 is too big to do proper scaling 
-			self.archer_imgs.append(pygame.transform.scale(
-				pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer1", str(x) + ".png")), 
-				(96, 96)))
 
 	def draw(self, win):
 		# draw range circle
@@ -79,7 +82,7 @@ class ArcherTowerLong(Tower):
 
 			if time.time() - self.timer >= 0.5:
 				self.timer = time.time()
-				if first_enemy.hit() == True:
+				if first_enemy.hit(self.damage) == True:
 					enemies.remove(first_enemy)
 
 			if first_enemy.x < self.x and not self.left:
@@ -91,3 +94,24 @@ class ArcherTowerLong(Tower):
 				self.left = False
 				for x, img in enumerate(self.archer_imgs):
 					self.archer_imgs[x] = pygame.transform.flip(img, True, False)	
+
+
+archer_imgs2 = []
+# load archer imgs
+for x in range(6): 
+	archer_imgs2.append(pygame.transform.scale(
+		pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
+		(96, 96)))
+
+
+class ArcherTowerShort(ArcherTowerLong):
+	def __init__(self, x, y):
+		super().__init__(x, y)
+		self.tower_imgs = tower_imgs[:]
+		self.archer_imgs = archer_imgs2[:]
+		self.archer_count = 0
+		self.range = 100
+		self.inRange = False
+		self.left = False
+		self.timer = time.time()
+		self.damage = 2

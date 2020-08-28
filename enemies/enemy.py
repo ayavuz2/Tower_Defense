@@ -143,12 +143,12 @@ class Enemy:
 		for x, img in enumerate(self.imgs):
 			self.imgs[x] = pygame.transform.flip(img, True, False)
 
-	def hit(self):
+	def hit(self, damage):
 		"""
 		Returns if an enemy has died and removes one health for each call
 		:return: None
 		"""
-		self.health -= 1
+		self.health -= damage
 		if self.health <= 0:
 			return True
 		return False

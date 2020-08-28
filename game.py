@@ -4,7 +4,7 @@ import time
 import random
 from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
-from towers.archerTower import ArcherTowerLong
+from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 
 
 class Game:
@@ -13,7 +13,7 @@ class Game:
 		self.height = 700
 		self.win = pygame.display.set_mode((self.width, self.height))
 		self.enemies = [Wizard()]
-		self.towers = [ArcherTowerLong(300,300), ArcherTowerLong(600,300)]
+		self.towers = [ArcherTowerLong(300,300), ArcherTowerShort(600,300)]
 		self.lives = 10
 		self.money = 100
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
@@ -61,13 +61,13 @@ class Game:
 	def draw(self):
 		self.win.blit(self.bg, (0,0))
 
-		# draw enemies
-		for en in self.enemies:
-			en.draw(self.win)
-
 		# draw towers
 		for tw in self.towers:
 			tw.draw(self.win)
+		
+		# draw enemies
+		for en in self.enemies:
+			en.draw(self.win)
 
 		pygame.display.update()
 

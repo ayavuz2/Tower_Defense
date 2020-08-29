@@ -6,11 +6,11 @@ from .tower import Tower
 
 
 
-tower_imgs = []
+tower_imgs1 = []
 archer_imgs1 = []
 # load archer tower imgs
 for x in range(4):
-	tower_imgs.append(pygame.transform.scale(
+	tower_imgs1.append(pygame.transform.scale(
 		pygame.image.load(os.path.join("game_assets/towers/archer_towers/1", str(x) + ".png")), 
 		(96, 96)))
 
@@ -23,7 +23,7 @@ for x in range(6): # change the archer img! 2000x1050 is too big to do proper sc
 class ArcherTowerLong(Tower):
 	def __init__(self, x, y):
 		super().__init__(x, y)
-		self.tower_imgs = tower_imgs[:]
+		self.tower_imgs = tower_imgs1[:]
 		self.archer_imgs = archer_imgs1[:]
 		self.archer_count = 0
 		self.range = 200
@@ -97,23 +97,31 @@ class ArcherTowerLong(Tower):
 					self.archer_imgs[x] = pygame.transform.flip(img, True, False)	
 
 
+tower_imgs2 = []
 archer_imgs2 = []
+
+# load archer tower imgs
+for x in range(3):
+	tower_imgs2.append(pygame.transform.scale(
+		pygame.image.load(os.path.join("game_assets/towers/archer_towers/2", str(x) + ".png")),
+		(96, 96)))
+
 # load archer imgs
-for x in range(16): 
+for x in range(10): 
 	archer_imgs2.append(pygame.transform.scale(
 		pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
-		(96, 96)))
+		(64, 64)))
 
 
 class ArcherTowerShort(ArcherTowerLong):
 	def __init__(self, x, y):
 		super().__init__(x, y)
-		self.tower_imgs = tower_imgs[:]
+		self.tower_imgs = tower_imgs2[:]
 		self.archer_imgs = archer_imgs2[:]
 		self.archer_count = 0
 		self.range = 100
 		self.inRange = False
-		self.left = False
+		self.left = True
 		self.timer = time.time()
 		self.damage = 2
-		self.animation_speed_multiplier = 1
+		self.animation_speed_multiplier = 2

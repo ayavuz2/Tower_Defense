@@ -9,11 +9,11 @@ from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 
 class Game:
 	def __init__(self):
-		self.width = 1100
-		self.height = 700
+		self.width = 1100 # 1280
+		self.height = 700 # 720
 		self.win = pygame.display.set_mode((self.width, self.height))
 		self.enemies = [Wizard()]
-		self.towers = [ArcherTowerLong(300,300), ArcherTowerShort(600,300)]
+		self.towers = [ArcherTowerLong(300,350), ArcherTowerShort(600,350)]
 		self.lives = 10
 		self.money = 100
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))

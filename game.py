@@ -23,7 +23,7 @@ class Game:
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
 		self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
 		self.timer = time.time()
-		self.life_font = pygame.font.SysFont("comicsans", 70)
+		self.life_font = pygame.font.SysFont("comicsans", 60)
 
 	def run(self):
 		run = True
@@ -85,7 +85,7 @@ class Game:
 		life = lives_img
 		start_x = self.width - life.get_width() - 5
 
-		self.win.blit(text, (start_x - text.get_width() - 10, 10))
+		self.win.blit(text, (start_x - text.get_width() - 10, 15))
 		self.win.blit(life, (start_x, 10))
 
 		pygame.display.update()

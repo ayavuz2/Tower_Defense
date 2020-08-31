@@ -5,6 +5,10 @@ import random
 from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
 from towers.archerTower import ArcherTowerLong, ArcherTowerShort
+pygame.font.init()
+
+lives_img = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "heart.png")), (48,48))
 
 
 class Game:
@@ -19,6 +23,7 @@ class Game:
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
 		self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
 		self.timer = time.time()
+		self.life_font = pygame.font.SysFont("comicsans", 70)
 
 	def run(self):
 		run = True
@@ -48,11 +53,17 @@ class Game:
 
 			# delete all enemies off the screen
 			for d in to_del:
+				self.lives -= 1
 				self.enemies.remove(d)
 
 			# loop through towers
 			for tw in self.towers:
 				tw.attack(self.enemies)
+
+			# if you lose
+			if self.lives <= 0:
+				print("You Lost")
+				run = False
 
 			self.draw()
 
@@ -68,6 +79,14 @@ class Game:
 		# draw enemies
 		for en in self.enemies:
 			en.draw(self.win)
+
+		# draw lives
+		text = self.life_font.render(str(self.lives), 1, (255,0,0))
+		life = lives_img
+		start_x = self.width - life.get_width() - 5
+
+		self.win.blit(text, (start_x - text.get_width() - 10, 10))
+		self.win.blit(life, (start_x, 10))
 
 		pygame.display.update()
 

@@ -81,7 +81,7 @@ class ArcherTowerLong(Tower):
 		if len(enemy_closest) > 0:
 			first_enemy = enemy_closest[0]
 
-			if self.archer_count == self.archer_total_imgs:
+			if self.archer_count == 9:
 				if first_enemy.hit(self.damage) == True:
 					enemies.remove(first_enemy)
 
@@ -93,7 +93,10 @@ class ArcherTowerLong(Tower):
 			elif first_enemy.x > self.x and self.left:
 				self.left = False
 				for x, img in enumerate(self.archer_imgs):
-					self.archer_imgs[x] = pygame.transform.flip(img, True, False)	
+					self.archer_imgs[x] = pygame.transform.flip(img, True, False)
+
+		def flip_archer_imgs(self): # no need atm.
+			pass	
 
 
 tower_imgs2 = []

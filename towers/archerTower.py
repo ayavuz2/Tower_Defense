@@ -35,12 +35,7 @@ class ArcherTowerLong(Tower):
 		self.animation_speed_multiplier = 2
 
 	def draw(self, win):
-		# draw range circle
-		surface = pygame.Surface((self.range*2, self.range*2), pygame.SRCALPHA, 32)
-		pygame.draw.circle(surface, (128,128,128, 100), (self.range, self.range), self.range, 0)
-
-		win.blit(surface, (self.x - self.range, self.y - self.range))
-		
+		super().draw_radius(win)
 		super().draw(win)
 
 		if self.inRange:

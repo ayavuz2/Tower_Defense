@@ -90,6 +90,8 @@ class Game:
 
 		pygame.display.update()
 
+	def draw_menu(self):
+		pass
 
 g = Game()
 g.run()

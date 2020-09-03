@@ -7,7 +7,7 @@ from .tower import Tower
 
 range_imgs = [(pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets/towers/support_towers/range_tower", "{}.png").format(i)),
-	 (64, 64))) for i in range(2)]
+	 (96,128))) for i in range(2)]
 
 class RangeTower(Tower):
 	"""
@@ -15,9 +15,10 @@ class RangeTower(Tower):
 	"""
 	def __init__(self, x, y):
 		super().__init__(x, y)
-		self.radius = 150
+		self.range = 150
+		self.original_range = self.range
 		self.effect = [0.2, 0.4]
-		self.imgs = range_imgs
+		self.tower_imgs = range_imgs[:]
 
 	def draw(self, win):
 		super().draw_radius(win)
@@ -29,12 +30,21 @@ class RangeTower(Tower):
 		:param towers: list
 		:return: None
 		"""
-		pass
+		effected = []
+		for tower in towers:
+			x, y = tower.x, tower.y			
+			dis = math.sqrt((self.x - x)**2 + (self.y - y)**2)
+
+			if dis <= self.range:
+				effected.append(tower)
+
+		for tower in effected:
+			tower.range = tower.original_range + round(tower.original_range * self.effect[self.level - 1])
 
 
 damage_imgs = [(pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets/towers/support_towers/damage_tower", "{}.png").format(i)),
-	 (64, 64))) for i in range(2)]
+	 (128,128))) for i in range(2)]
 
 class DamageTower(RangeTower):
 	"""
@@ -42,9 +52,10 @@ class DamageTower(RangeTower):
 	"""
 	def __init__(self):
 		super().__init__(x, y)
-		self.radius = 150
+		self.range = 10
+		self.original_range = self.range
 		self.effect = [1, 2]
-		self.imgs = damage_imgs
+		self.tower_imgs = damage_imgs[:]
 
 	def support(self, towers):
 		"""
@@ -52,4 +63,13 @@ class DamageTower(RangeTower):
 		:param towers: list
 		:return: None
 		"""
-		pass
+		effected = []
+		for tower in towers:
+			x, y = tower.x, tower.y			
+			dis = math.sqrt((self.x - x)**2 + (self.y - y)**2)
+
+			if dis <= self.range:
+				effected.append(tower)
+
+		for tower in effected:
+			tower.range = tower.original_range + round(tower.original_range * self.effect[self.level - 1])

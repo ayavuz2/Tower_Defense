@@ -18,7 +18,8 @@ class Game:
 		self.height = 700 # 720
 		self.win = pygame.display.set_mode((self.width, self.height))
 		self.enemies = [Wizard()]
-		self.towers = [ArcherTowerLong(300,350), RangeTower(600, 350)]
+		self.attack_towers = [ArcherTowerLong(300,350)]
+		self.support_towers = [RangeTower(500, 350)]
 		self.lives = 10
 		self.money = 100
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
@@ -57,9 +58,13 @@ class Game:
 				self.lives -= 1
 				self.enemies.remove(d)
 
-			# loop through towers
-			for tw in self.towers:
+			# loop through attack towers
+			for tw in self.attack_towers:
 				tw.attack(self.enemies)
+
+			# loop through support towers
+			for tw in self.support_towers:
+				tw.support(self.attack_towers) # sending attack towers to see if they are in range of the support tower
 
 			# if you lose
 			if self.lives <= 0:
@@ -73,10 +78,14 @@ class Game:
 	def draw(self):
 		self.win.blit(self.bg, (0,0))
 
-		# draw towers
-		for tw in self.towers:
+		# draw attack towers
+		for tw in self.attack_towers:
 			tw.draw(self.win)
 		
+		# draw range towers
+		for tw in self.support_towers:
+			tw.draw(self.win)
+
 		# draw enemies
 		for en in self.enemies:
 			en.draw(self.win)

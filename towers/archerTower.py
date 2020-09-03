@@ -13,13 +13,6 @@ for x in range(4):
 		pygame.image.load(os.path.join("game_assets/towers/archer_towers/1", str(x) + ".png")), 
 		(96, 96)))
 
-"""
-# load archer imgs
-for x in range(6): # change the archer img! 2000x1050 is too big to do proper scaling 
-	archer_imgs1.append(pygame.transform.scale(
-		pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_1", str(x) + ".png")), 
-		(96, 96)))
-"""
 
 class ArcherTowerLong(Tower):
 	def __init__(self, x, y):
@@ -29,6 +22,7 @@ class ArcherTowerLong(Tower):
 		self.archer_total_imgs = len(archer_imgs1)
 		self.archer_count = 0
 		self.range = 200
+		self.original_range = self.range 
 		self.inRange = False
 		self.left = True
 		self.damage = 1

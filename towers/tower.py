@@ -13,6 +13,8 @@ class Tower:
 		self.sell_price = [0,0,0]
 		self.price = [0,0,0]
 		self.level = 1
+		self.range = 200
+		self.original_range = self.range # Not sure this should be in here
 		self.selected = False
 		self.menu = None
 		self.tower_imgs = []

@@ -5,6 +5,7 @@ import random
 from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
 from towers.archerTower import ArcherTowerLong, ArcherTowerShort
+from towers.supportTower import RangeTower, DamageTower
 pygame.font.init()
 
 lives_img = pygame.transform.scale(
@@ -17,7 +18,7 @@ class Game:
 		self.height = 700 # 720
 		self.win = pygame.display.set_mode((self.width, self.height))
 		self.enemies = [Wizard()]
-		self.towers = [ArcherTowerLong(300,350)]
+		self.towers = [ArcherTowerLong(300,350), RangeTower(600, 350)]
 		self.lives = 10
 		self.money = 100
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))

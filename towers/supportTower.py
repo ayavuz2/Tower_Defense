@@ -9,6 +9,9 @@ range_imgs = [(pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets/towers/support_towers/range_tower", "{}.png").format(i)),
 	 (96,128))) for i in range(2)]
 
+# Find a way to make code do not check support function every second.
+# Maybe do it by a check statement if it is already effected by the support towers or not
+
 class RangeTower(Tower):
 	"""
 	Add extra range to each surrounding tower
@@ -35,7 +38,7 @@ class RangeTower(Tower):
 			x, y = tower.x, tower.y			
 			dis = math.sqrt((self.x - x)**2 + (self.y - y)**2)
 
-			if dis <= self.range:
+			if dis <= self.range + tower.width/2:
 				effected.append(tower)
 
 		for tower in effected:
@@ -68,8 +71,8 @@ class DamageTower(RangeTower):
 			x, y = tower.x, tower.y			
 			dis = math.sqrt((self.x - x)**2 + (self.y - y)**2)
 
-			if dis <= self.range:
+			if dis <= self.range + tower.width/2:
 				effected.append(tower)
 
 		for tower in effected:
-			tower.range = tower.original_range + round(tower.original_range * self.effect[self.level - 1])
+			tower.damage = self.original_damage + self.effect[self.level - 1]

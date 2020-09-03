@@ -22,11 +22,13 @@ class ArcherTowerLong(Tower):
 		self.archer_total_imgs = len(archer_imgs1)
 		self.archer_count = 0
 		self.range = 200
-		self.original_range = self.range 
+		self.original_range = self.range
+		self.original_damage = self.damage
 		self.inRange = False
 		self.left = True
 		self.damage = 1
 		self.animation_speed_multiplier = 2
+		self.width = self.height = 90
 
 	def draw(self, win):
 		super().draw_radius(win)
@@ -40,7 +42,7 @@ class ArcherTowerLong(Tower):
 			self.archer_count = 0
 
 		archer = self.archer_imgs[self.archer_count//self.animation_speed_multiplier]
-		win.blit(archer, ((self.x + self.width/2) - (archer.get_width()/2), (self.y - archer.get_height() - 20)))
+		win.blit(archer, (self.x  - (archer.get_width()/2), (self.y - archer.get_height() - 20)))
 
 	def change_range(self, r):
 		"""
@@ -117,6 +119,8 @@ class ArcherTowerShort(ArcherTowerLong):
 		self.archer_count = 0
 		self.range = 100
 		self.inRange = False
+		self.original_range = self.range
+		self.original_damage = self.damage
 		self.left = True
 		self.damage = 2
 		self.animation_speed_multiplier = 2

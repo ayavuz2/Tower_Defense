@@ -30,11 +30,12 @@ class Tower:
 		win.blit(img, (self.x-img.get_width()//2, self.y-img.get_height()//2))
 
 	def draw_radius(self, win):
-		# draw range circle
-		surface = pygame.Surface((self.range*2, self.range*2), pygame.SRCALPHA, 32)
-		pygame.draw.circle(surface, (128,128,128, 100), (self.range, self.range), self.range, 0)
+		# draw range circle if selected
+		if self.selected:	
+			surface = pygame.Surface((self.range*2, self.range*2), pygame.SRCALPHA, 32)
+			pygame.draw.circle(surface, (128,128,128, 100), (self.range, self.range), self.range, 0)
 
-		win.blit(surface, (self.x - self.range, self.y - self.range))
+			win.blit(surface, (self.x - self.range, self.y - self.range))
 
 	def click(self, X, Y):
 		"""
@@ -44,8 +45,9 @@ class Tower:
 		:param Y: int
 		:return: bool
 		"""
-		if X <= self.x + self.width and X >= self.x:
-			if Y <= self.y + self.height and Y >= self.y:
+		img = self.tower_imgs[self.level - 1]
+		if X - img.get_width()//2 <= self.x + self.width and X >= self.x:
+			if Y - img.get_height()//2 <= self.y + self.height and Y >= self.y:
 				return True
 		return False
 

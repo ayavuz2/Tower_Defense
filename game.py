@@ -46,7 +46,16 @@ class Game:
 				pos = pygame.mouse.get_pos()
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
+					# look if you clicked on a attack tower
 					for tw in self.attack_towers:
+						if tw.click(pos[0], pos[1]):
+							tw.selected = True
+							self.selected_tower = tw
+						else:
+							tw.selected = False
+
+					# look if you clicked on a support tower
+					for tw in self.support_towers:
 						if tw.click(pos[0], pos[1]):
 							tw.selected = True
 							self.selected_tower = tw

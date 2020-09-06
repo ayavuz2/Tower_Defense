@@ -46,8 +46,8 @@ class Tower:
 		:return: bool
 		"""
 		img = self.tower_imgs[self.level - 1]
-		if X - img.get_width()//2 <= self.x + self.width and X >= self.x:
-			if Y - img.get_height()//2 <= self.y + self.height and Y >= self.y:
+		if X  <= self.x - img.get_width()//2 + self.width and X >= self.x - img.get_width()//2:
+			if Y <= self.y + self.height - img.get_height()//2 and Y >= self.y - img.get_height()//2:
 				return True
 		return False
 

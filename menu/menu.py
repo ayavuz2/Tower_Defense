@@ -1,7 +1,6 @@
 import pygame
 import os
 
-menu_bg = pygame.image.load(os.path.join("game_assets", "menu.png"))
 
 class Button:
 	def __init__(self, x, y, name):
@@ -13,34 +12,35 @@ class Button:
 		self.height = self.img.get_height()
 
 	def click(self, X, Y):
-	"""
-	returns if the position has collided with the menu
-	:param X: int
-	:param Y: int
-	:return: bool
-	"""
-	if X <= self.x + self.width and X >= self.x:
-		if Y >= self.y + self.height and Y >= self.y:
-			return True
-	return False
+		"""
+		returns if the position has collided with the menu
+		:param X: int
+		:param Y: int
+		:return: bool
+		"""
+		if X <= self.x + self.width and X >= self.x:
+			if Y >= self.y + self.height and Y >= self.y:
+				return True
+		return False
 
-	def draw(self, win):
-		win.blit(self.img, (self.x, self.y))
+		def draw(self, win):
+			win.blit(self.img, (self.x, self.y))
 
 
 class Menu:
 	"""
 	menu for holding items
 	"""
-	def __init__(self, x, y):
+	def __init__(self, x, y, img):
 		self.x = x
 		self.y = y
-		self.width = 0
-		self.height = 0
+		self.width = img.get_width()
+		self.height = img.get_height()
 		self.item_names = []
 		self.items = 0
 		self.buttons = []
 		self.imgs = []
+		self.menu_bg = img
 
 	def draw(self, win):
 		"""
@@ -48,6 +48,7 @@ class Menu:
 		:param win: surface
 		:retunr: None
 		"""
+		win.blit(self.menu_bg, (self.x - self.menu_bg.get_width()/2, self.y-120))
 		for button in self.buttons:
 			button.draw(win)
 

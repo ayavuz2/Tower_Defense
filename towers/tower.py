@@ -1,5 +1,9 @@
 import pygame
+import os
+from menu.menu import Menu
 
+
+menu_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "menu.png")), (120, 50))
 
 class Tower:
 	"""
@@ -16,7 +20,7 @@ class Tower:
 		self.range = 200
 		self.original_range = self.range # Not sure this should be in here
 		self.selected = False
-		self.menu = None
+		self.menu = Menu(self.x, self.y, menu_bg)
 		self.tower_imgs = []
 		self.damage = 1
 
@@ -28,6 +32,10 @@ class Tower:
 		"""
 		img = self.tower_imgs[self.level - 1]
 		win.blit(img, (self.x-img.get_width()//2, self.y-img.get_height()//2))
+
+		# draw menu
+		if self.selected:
+			self.menu.draw(win)
 
 	def draw_radius(self, win):
 		# draw range circle if selected

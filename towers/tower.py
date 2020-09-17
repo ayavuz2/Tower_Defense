@@ -3,7 +3,8 @@ import os
 from menu.menu import Menu
 
 
-menu_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "menu.png")), (120, 50))
+menu_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "menu_horizontal.png")), (120, 70))
+upgrade_button = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "upgrade.png")), (35, 35)) 
 
 class Tower:
 	"""
@@ -18,9 +19,12 @@ class Tower:
 		self.price = [0,0,0]
 		self.level = 1
 		self.range = 200
-		self.original_range = self.range # Not sure this should be in here
+		self.original_range = self.range # Not sure if this should be in here
 		self.selected = False
+		# define menu and buttons
 		self.menu = Menu(self.x, self.y, menu_bg)
+		self.menu.add_button(upgrade_button, "Upgrade")
+
 		self.tower_imgs = []
 		self.damage = 1
 

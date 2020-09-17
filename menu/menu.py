@@ -3,11 +3,11 @@ import os
 
 
 class Button:
-	def __init__(self, x, y, name):
+	def __init__(self, x, y, img, name):
 		self.x = x
 		self.y = y
 		self.name = name
-		self.img = None
+		self.img = img
 		self.width = self.img.get_width()
 		self.height = self.img.get_height()
 
@@ -19,12 +19,12 @@ class Button:
 		:return: bool
 		"""
 		if X <= self.x + self.width and X >= self.x:
-			if Y >= self.y + self.height and Y >= self.y:
+			if Y <= self.y + self.height and Y >= self.y:
 				return True
 		return False
 
-		def draw(self, win):
-			win.blit(self.img, (self.x, self.y))
+	def draw(self, win):
+		win.blit(self.img, (self.x, self.y))
 
 
 class Menu:
@@ -60,10 +60,10 @@ class Menu:
 		:return: None
 		"""
 		self.items += 1
-		increment_x = self.width/self.items/2
-		button_x = self.items * increment_x - img.get_width()/2
-		button_y = self.y + self.get_height/2 - img.get_height()/2
-		self.buttons.append(Button(button_x, button_y, name))
+		# increment_x = self.width/self.items/2
+		button_x = self.x - self.menu_bg.get_width()//2 + 15
+		button_y = self.y - 120 + 15
+		self.buttons.append(Button(button_x, button_y, img, name))
 
 	def get_clicked(self, X, Y):
 		"""
@@ -75,3 +75,5 @@ class Menu:
 		for button in self.buttons:
 			if button.click(X,Y):
 				return button.name
+
+		return None

@@ -19,7 +19,7 @@ class ArcherTowerLong(Tower):
 		super().__init__(x, y)
 		self.tower_imgs = tower_imgs1[:]
 		self.archer_imgs = archer_imgs2[:]
-		self.archer_total_imgs = len(archer_imgs1)
+		self.archer_total_imgs = len(archer_imgs2)
 		self.archer_count = 0
 		self.range = 200
 		self.original_range = self.range
@@ -104,11 +104,11 @@ for x in range(10):
 	if x != 6:
 		archer_imgs2.append(pygame.transform.scale(
 			pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
-			(64, 64)))
+			(48, 64)))
 	else:
 		archer_imgs2.append(pygame.transform.scale(
 			pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
-			(192, 64)))
+			(128, 64)))
 
 class ArcherTowerShort(ArcherTowerLong):
 	def __init__(self, x, y):

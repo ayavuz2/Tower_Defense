@@ -52,7 +52,8 @@ class Game:
 					if self.selected_tower:
 						button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
 						if button_clicked:
-							print(button_clicked)
+							if button_clicked == "Upgrade":
+								self.selected_tower.upgrade()
 
 					if not button_clicked:
 						for tw in self.attack_towers:

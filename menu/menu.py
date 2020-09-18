@@ -2,7 +2,13 @@ import pygame
 import os
 
 
+pygame.font.init()
+coin = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
+
 class Button:
+	"""
+	Button class for menu object
+	"""
 	def __init__(self, x, y, img, name):
 		self.x = x
 		self.y = y
@@ -31,16 +37,18 @@ class Menu:
 	"""
 	menu for holding items
 	"""
-	def __init__(self, x, y, img):
+	def __init__(self, x, y, tower, img, item_cost):
 		self.x = x
 		self.y = y
 		self.width = img.get_width()
 		self.height = img.get_height()
-		self.item_names = []
 		self.items = 0
+		self.item_cost = item_cost
 		self.buttons = []
 		self.imgs = []
 		self.menu_bg = img
+		self.tower = tower
+		self.font = pygame.font.SysFont("comicsans", 20)
 
 	def draw(self, win):
 		"""
@@ -49,8 +57,11 @@ class Menu:
 		:retunr: None
 		"""
 		win.blit(self.menu_bg, (self.x - self.menu_bg.get_width()/2, self.y-120))
-		for button in self.buttons:
-			button.draw(win)
+		for item in self.buttons:
+			item.draw(win)
+			win.blit(coin, (item.x + item.width + 20, item.y))
+			text = self.font.render(str(self.item_cost[self.tower.level - 1]), 1, (255,255,255))
+			win.blit(text, (item.x + item.width + 25, item.y + coin.get_height()))
 
 	def add_button(self, img, name):
 		"""
@@ -60,7 +71,6 @@ class Menu:
 		:return: None
 		"""
 		self.items += 1
-		# increment_x = self.width/self.items/2
 		button_x = self.x - self.menu_bg.get_width()//2 + 15
 		button_y = self.y - 120 + 15
 		self.buttons.append(Button(button_x, button_y, img, name))

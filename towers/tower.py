@@ -22,7 +22,7 @@ class Tower:
 		self.original_range = self.range # Not sure if this should be in here
 		self.selected = False
 		# define menu and buttons
-		self.menu = Menu(self.x, self.y, menu_bg)
+		self.menu = Menu(self.x, self.y, self, menu_bg, [2000, 5000, 9000, 12000])
 		self.menu.add_button(upgrade_button, "Upgrade")
 
 		self.tower_imgs = []

@@ -3,7 +3,11 @@ import os
 import math
 import time
 from .tower import Tower
+from menu.menu import Menu
 
+
+menu_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "menu_horizontal.png")), (120, 70))
+upgrade_button = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "upgrade.png")), (35, 35))
 
 tower_imgs1 = []
 archer_imgs1 = []
@@ -29,6 +33,8 @@ class ArcherTowerLong(Tower):
 		self.damage = 1
 		self.animation_speed_multiplier = 2
 		self.width = self.height = 90
+		self.menu = Menu(self.x, self.y, self, menu_bg, [2000, 5000, 9000, "MAX"])
+		self.menu.add_button(upgrade_button, "Upgrade")
 
 	def draw(self, win):
 		super().draw_radius(win)
@@ -44,6 +50,9 @@ class ArcherTowerLong(Tower):
 		archer = self.archer_imgs[self.archer_count//self.animation_speed_multiplier]
 		win.blit(archer, (self.x  - (archer.get_width()/2), (self.y - archer.get_height() - 20)))
 
+	def get_upgrade_cost(self):
+		return self.menu.get_item_cost()
+
 	def change_range(self, r):
 		"""
 		change range of archer tower
@@ -56,8 +65,9 @@ class ArcherTowerLong(Tower):
 		"""
 		attacks an enemy in the enemy list, modifies list
 		:param enemies: list of enemies
-		:reurn: None
+		:return: None
 		"""
+		money = 0
 		self.inRange = False
 		enemy_closest = []
 		for enemy in enemies:
@@ -74,6 +84,7 @@ class ArcherTowerLong(Tower):
 
 			if self.archer_count == 9:
 				if first_enemy.hit(self.damage) == True:
+					money = first_enemy.money
 					enemies.remove(first_enemy)
 
 			if first_enemy.x < self.x and not self.left:
@@ -85,6 +96,8 @@ class ArcherTowerLong(Tower):
 				self.left = False
 				for x, img in enumerate(self.archer_imgs):
 					self.archer_imgs[x] = pygame.transform.flip(img, True, False)
+
+		return money
 
 		def flip_archer_imgs(self): # no need atm.
 			pass	
@@ -124,3 +137,5 @@ class ArcherTowerShort(ArcherTowerLong):
 		self.left = True
 		self.damage = 2
 		self.animation_speed_multiplier = 2
+		self.menu = Menu(self.x, self.y, self, menu_bg, [2000, 5000, "MAX"])
+		self.menu.add_button(upgrade_button, "Upgrade")

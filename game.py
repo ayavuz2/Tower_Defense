@@ -8,9 +8,11 @@ from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 from towers.supportTower import RangeTower, DamageTower
 pygame.font.init()
 
+
 lives_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "heart.png")), (48,48))
-
+coin_img = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
 
 class Game:
 	def __init__(self):
@@ -21,11 +23,11 @@ class Game:
 		self.attack_towers = [ArcherTowerLong(300,350)]
 		self.support_towers = [RangeTower(500, 350)]
 		self.lives = 10
-		self.money = 100
+		self.money = 2000
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
 		self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
 		self.timer = time.time()
-		self.life_font = pygame.font.SysFont("comicsans", 60)
+		self.life_font = pygame.font.SysFont("comicsans", 50)
 		self.selected_tower = None
 
 	def run(self):
@@ -53,7 +55,10 @@ class Game:
 						button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
 						if button_clicked:
 							if button_clicked == "Upgrade":
-								self.selected_tower.upgrade()
+								cost = self.selected_tower.get_upgrade_cost()
+								if self.money >= cost:
+									self.money -= cost
+									self.selected_tower.upgrade()
 
 					if not button_clicked:
 						for tw in self.attack_towers:
@@ -84,7 +89,7 @@ class Game:
 
 			# loop through attack towers
 			for tw in self.attack_towers:
-				tw.attack(self.enemies)
+				self.money += tw.attack(self.enemies)
 
 			# loop through support towers
 			for tw in self.support_towers:
@@ -121,6 +126,14 @@ class Game:
 
 		self.win.blit(text, (start_x - text.get_width() - 10, 15))
 		self.win.blit(life, (start_x, 10))
+
+		# draw money
+		text = self.life_font.render(str(self.money), 1, (255,255,0))
+		money = pygame.transform.scale(coin_img, (35, 35))
+		start_x = self.width - life.get_width() - 5
+
+		self.win.blit(text, (start_x - text.get_width() - 10, 65))
+		self.win.blit(money, (start_x + 5, 60))
 
 		pygame.display.update()
 

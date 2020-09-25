@@ -1,9 +1,10 @@
 import pygame
 import os
-
-
 pygame.font.init()
-coin = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
+
+
+coing_img = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
 
 class Button:
 	"""
@@ -59,9 +60,9 @@ class Menu:
 		win.blit(self.menu_bg, (self.x - self.menu_bg.get_width()/2, self.y-120))
 		for item in self.buttons:
 			item.draw(win)
-			win.blit(coin, (item.x + item.width + 20, item.y))
+			win.blit(coing_img, (item.x + item.width + 20, item.y))
 			text = self.font.render(str(self.item_cost[self.tower.level - 1]), 1, (255,255,255))
-			win.blit(text, (item.x + item.width + 25, item.y + coin.get_height()))
+			win.blit(text, (item.x + item.width + 25, item.y + coing_img.get_height()))
 
 	def add_button(self, img, name):
 		"""
@@ -74,6 +75,13 @@ class Menu:
 		button_x = self.x - self.menu_bg.get_width()//2 + 15
 		button_y = self.y - 120 + 15
 		self.buttons.append(Button(button_x, button_y, img, name))
+
+	def get_item_cost(self):
+		"""
+		gets cost of upgrade  to next level
+		:return: int
+		"""
+		return self.item_cost[self.tower.level - 1]
 
 	def get_clicked(self, X, Y):
 		"""

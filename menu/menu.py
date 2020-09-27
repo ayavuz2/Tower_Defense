@@ -34,6 +34,15 @@ class Button:
 		win.blit(self.img, (self.x, self.y))
 
 
+class VerticalButton(Button):
+	"""
+	Button class for menu object
+	"""
+	def __init__(self, x, y, img, name, cost):
+		super().__init__(x, y, img, name)
+		self.cost = cost
+
+
 class Menu:
 	"""
 	menu for holding items
@@ -95,3 +104,34 @@ class Menu:
 				return button.name
 
 		return None
+
+
+class VerticalMenu(Menu):
+	"""
+	Vertical Menu for side bar of game
+	"""
+	def __init__(self, x, y, img):
+		self.x = x
+		self.y = y
+		self.width = img.get_width()
+		self.height = img.get_height()
+		self.items = 0
+		self.buttons = []
+		self.imgs = []
+		self.menu_bg = img
+		self.font = pygame.font.SysFont("comicsans", 20)
+
+	def add_button(self, img, name, cost):
+		"""
+		adds buttons to menu
+		:param img: surface
+		:param name: str
+		:return: None
+		"""
+		self.items += 1
+		button_x = self.x + 15
+		button_y = self.y + 10 + (self.items - 1) * 60
+		self.buttons.append(VerticalButton(button_x, button_y, img, name))	
+
+	def get_item_cost(self):
+		return Exception("Not implemented")

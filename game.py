@@ -6,6 +6,7 @@ from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
 from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 from towers.supportTower import RangeTower, DamageTower
+from menu.menu import VerticalMenu
 pygame.font.init()
 
 
@@ -13,6 +14,17 @@ lives_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "heart.png")), (48,48))
 coin_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
+side_img = pygame.image.load(os.path.join("game_assets", "menu_vertical.png"))
+
+buy_archer = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "buy_archer.png")), (35, 35))
+buy_archer2 = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "buy_archer2.png")), (35, 35))
+buy_damage = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "buy_damage.png")), (35, 35))
+buy_range = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "buy_range.png")), (35, 35))
+
 
 class Game:
 	def __init__(self):
@@ -29,6 +41,7 @@ class Game:
 		self.timer = time.time()
 		self.life_font = pygame.font.SysFont("comicsans", 50)
 		self.selected_tower = None
+		self.menu = VerticalMenu(self.width - side_img.get_width() + 30, 275, side_img)
 
 	def run(self):
 		run = True
@@ -118,6 +131,9 @@ class Game:
 		# draw enemies
 		for en in self.enemies:
 			en.draw(self.win)
+
+		# draw menu
+		self.menu.draw(self.win)
 
 		# draw lives
 		text = self.life_font.render(str(self.lives), 1, (255,0,0))

@@ -3,8 +3,11 @@ import os
 pygame.font.init()
 
 
-coing_img = pygame.transform.scale(
+coin_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
+coin_img2 = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "sell.png")), (15, 15))
+
 
 class Button:
 	"""
@@ -69,9 +72,9 @@ class Menu:
 		win.blit(self.menu_bg, (self.x - self.menu_bg.get_width()/2, self.y-120))
 		for item in self.buttons:
 			item.draw(win)
-			win.blit(coing_img, (item.x + item.width + 20, item.y))
+			win.blit(coin_img, (item.x + item.width + 20, item.y))
 			text = self.font.render(str(self.item_cost[self.tower.level - 1]), 1, (255,255,255))
-			win.blit(text, (item.x + item.width + 25, item.y + coing_img.get_height()))
+			win.blit(text, (item.x + item.width + 25, item.y + coin_img.get_height()))
 
 	def add_button(self, img, name):
 		"""
@@ -121,6 +124,19 @@ class VerticalMenu(Menu):
 		self.menu_bg = img
 		self.font = pygame.font.SysFont("comicsans", 20)
 
+	def draw(self, win):
+		"""
+		draws buttons and menu bg
+		:param win: surface
+		:retunr: None
+		"""
+		win.blit(self.menu_bg, (self.x - self.width/2, self.y))
+		for item in self.buttons:
+			item.draw(win)
+			win.blit(coin_img2, (item.x, item.y + item.height + 3))
+			text = self.font.render(str(item.cost), 1, (255,255,255))
+			win.blit(text, (item.x + coin_img2.get_width() + 3, item.y + item.height + 5))
+
 	def add_button(self, img, name, cost):
 		"""
 		adds buttons to menu
@@ -129,9 +145,9 @@ class VerticalMenu(Menu):
 		:return: None
 		"""
 		self.items += 1
-		button_x = self.x + 15
-		button_y = self.y + 10 + (self.items - 1) * 60
-		self.buttons.append(VerticalButton(button_x, button_y, img, name))	
+		button_x = self.x - 20
+		button_y = self.y + 25 + (self.items - 1) * 90
+		self.buttons.append(VerticalButton(button_x, button_y, img, name, cost))	
 
 	def get_item_cost(self):
 		return Exception("Not implemented")

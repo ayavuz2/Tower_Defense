@@ -14,16 +14,18 @@ lives_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "heart.png")), (48,48))
 coin_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
-side_img = pygame.image.load(os.path.join("game_assets", "menu_vertical.png"))
+
+side_img = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "menu_vertical.png")), (80, 400))
 
 buy_archer = pygame.transform.scale(
-	pygame.image.load(os.path.join("game_assets", "buy_archer.png")), (35, 35))
+	pygame.image.load(os.path.join("game_assets", "buy_archer.png")), (45, 45))
 buy_archer2 = pygame.transform.scale(
-	pygame.image.load(os.path.join("game_assets", "buy_archer2.png")), (35, 35))
+	pygame.image.load(os.path.join("game_assets", "buy_archer2.png")), (45, 45))
 buy_damage = pygame.transform.scale(
-	pygame.image.load(os.path.join("game_assets", "buy_damage.png")), (35, 35))
+	pygame.image.load(os.path.join("game_assets", "buy_damage.png")), (45, 45))
 buy_range = pygame.transform.scale(
-	pygame.image.load(os.path.join("game_assets", "buy_range.png")), (35, 35))
+	pygame.image.load(os.path.join("game_assets", "buy_range.png")), (45, 45))
 
 
 class Game:
@@ -41,7 +43,11 @@ class Game:
 		self.timer = time.time()
 		self.life_font = pygame.font.SysFont("comicsans", 50)
 		self.selected_tower = None
-		self.menu = VerticalMenu(self.width - side_img.get_width() + 30, 275, side_img)
+		self.menu = VerticalMenu(self.width - side_img.get_width() + 30, 140, side_img)
+		self.menu.add_button(buy_archer, "buy_archer", 500)
+		self.menu.add_button(buy_archer2, "buy_archer2", 700)
+		self.menu.add_button(buy_damage, "buy_damage", 1000)
+		self.menu.add_button(buy_range, "buy_range", 1000)
 
 	def run(self):
 		run = True
@@ -62,7 +68,7 @@ class Game:
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
 					# look if you clicked on a attack tower
-
+					print(pos[0], pos[1])
 					button_clicked = None
 					if self.selected_tower:
 						button_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])

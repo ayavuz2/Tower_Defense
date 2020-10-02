@@ -13,13 +13,17 @@ class Button:
 	"""
 	Button class for menu object
 	"""
-	def __init__(self, x, y, img, name):
-		self.x = x
-		self.y = y
+	def __init__(self, menu, img, name):
+		self.menu = menu
+		self.x = menu.x - self.menu.menu_bg.get_width()/2 + 15
+		self.y = menu.y - 105
 		self.name = name
 		self.img = img
 		self.width = self.img.get_width()
 		self.height = self.img.get_height()
+
+	def draw(self, win):
+		win.blit(self.img, (self.x, self.y))
 
 	def click(self, X, Y):
 		"""
@@ -33,8 +37,9 @@ class Button:
 				return True
 		return False
 
-	def draw(self, win):
-		win.blit(self.img, (self.x, self.y))
+	def update(self):
+		self.x = self.menu.x - self.menu.menu_bg.get_width()/2 + 15
+		self.y = self.menu.y - 105 # 120 - 15
 
 
 class VerticalButton(Button):
@@ -42,7 +47,12 @@ class VerticalButton(Button):
 	Button class for menu object
 	"""
 	def __init__(self, x, y, img, name, cost):
-		super().__init__(x, y, img, name)
+		self.x = x
+		self.y = y
+		self.name = name
+		self.img = img
+		self.width = self.img.get_width()
+		self.height = self.img.get_height()
 		self.cost = cost
 
 
@@ -69,7 +79,7 @@ class Menu:
 		:param win: surface
 		:retunr: None
 		"""
-		win.blit(self.menu_bg, (self.x - self.menu_bg.get_width()/2, self.y-120))
+		win.blit(self.menu_bg, (self.x - self.menu_bg.get_width()/2, self.y - 120))
 		for item in self.buttons:
 			item.draw(win)
 			win.blit(coin_img, (item.x + item.width + 20, item.y))
@@ -84,9 +94,9 @@ class Menu:
 		:return: None
 		"""
 		self.items += 1
-		button_x = self.x - self.menu_bg.get_width()//2 + 15
-		button_y = self.y - 120 + 15
-		self.buttons.append(Button(button_x, button_y, img, name))
+		# button_x = self.x
+		# button_y = self.y
+		self.buttons.append(Button(self, img, name))
 
 	def get_item_cost(self):
 		"""
@@ -107,6 +117,14 @@ class Menu:
 				return button.name
 
 		return None
+
+	def update(self):
+		"""
+		update button location
+		:return: None
+		"""
+		for button in self.buttons:
+			button.update()
 
 
 class VerticalMenu(Menu):

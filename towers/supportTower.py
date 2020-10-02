@@ -5,12 +5,13 @@ import time
 from .tower import Tower
 
 
+# Find a way to make code do not check support function every second.
+# Maybe do it by a check statement if it is already effected by the support towers or not
+
 range_imgs = [(pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets/towers/support_towers/range_tower", "{}.png").format(i)),
 	 (96,128))) for i in range(2)]
 
-# Find a way to make code do not check support function every second.
-# Maybe do it by a check statement if it is already effected by the support towers or not
 
 class RangeTower(Tower):
 	"""
@@ -18,6 +19,7 @@ class RangeTower(Tower):
 	"""
 	def __init__(self, x, y):
 		super().__init__(x, y)
+		self.name = "range_Tower"
 		self.range = 150
 		self.original_range = self.range
 		self.effect = [0.2, 0.4]
@@ -50,12 +52,14 @@ damage_imgs = [(pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets/towers/support_towers/damage_tower", "{}.png").format(i)),
 	 (128,128))) for i in range(2)]
 
+
 class DamageTower(RangeTower):
 	"""
 	Add damage to surrounding towers
 	"""
-	def __init__(self):
+	def __init__(self, x, y):
 		super().__init__(x, y)
+		self.name = "damage_Tower"
 		self.range = 10
 		self.original_range = self.range
 		self.effect = [1, 2]

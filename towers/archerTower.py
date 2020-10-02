@@ -10,7 +10,6 @@ menu_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "
 upgrade_button = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "upgrade.png")), (35, 35))
 
 tower_imgs1 = []
-archer_imgs1 = []
 # load archer tower imgs
 for x in range(4):
 	tower_imgs1.append(pygame.transform.scale(
@@ -22,8 +21,9 @@ class ArcherTowerLong(Tower):
 	def __init__(self, x, y):
 		super().__init__(x, y)
 		self.tower_imgs = tower_imgs1[:]
-		self.archer_imgs = archer_imgs2[:]
-		self.archer_total_imgs = len(archer_imgs2)
+		self.archer_imgs = archer_imgs[:]
+		self.name = "archer_Tower"
+		self.archer_total_imgs = len(archer_imgs)
 		self.archer_count = 0
 		self.range = 200
 		self.original_range = self.range
@@ -32,7 +32,8 @@ class ArcherTowerLong(Tower):
 		self.left = True
 		self.damage = 1
 		self.animation_speed_multiplier = 2
-		self.width = self.height = 90
+		self.width = self.height = 96
+		self.moving = False
 		self.menu = Menu(self.x, self.y, self, menu_bg, [2000, 5000, 9000, "MAX"])
 		self.menu.add_button(upgrade_button, "Upgrade")
 
@@ -40,7 +41,7 @@ class ArcherTowerLong(Tower):
 		super().draw_radius(win)
 		super().draw(win)
 
-		if self.inRange:
+		if self.inRange and not self.moving:
 			self.archer_count += 1
 			if self.archer_count >= len(self.archer_imgs)*self.animation_speed_multiplier:
 				self.archer_count = 0
@@ -104,7 +105,7 @@ class ArcherTowerLong(Tower):
 
 
 tower_imgs2 = []
-archer_imgs2 = []
+archer_imgs = []
 
 # load archer tower imgs
 for x in range(3):
@@ -115,11 +116,11 @@ for x in range(3):
 # load archer imgs
 for x in range(10):
 	if x != 6:
-		archer_imgs2.append(pygame.transform.scale(
+		archer_imgs.append(pygame.transform.scale(
 			pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
 			(48, 64)))
 	else:
-		archer_imgs2.append(pygame.transform.scale(
+		archer_imgs.append(pygame.transform.scale(
 			pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
 			(128, 64)))
 
@@ -127,8 +128,9 @@ class ArcherTowerShort(ArcherTowerLong):
 	def __init__(self, x, y):
 		super().__init__(x, y)
 		self.tower_imgs = tower_imgs2[:]
-		self.archer_imgs = archer_imgs2[:]
-		self.archer_total_imgs = len(archer_imgs2)
+		self.archer_imgs = archer_imgs[:]
+		self.name = "archerTower2"
+		self.archer_total_imgs = len(archer_imgs)
 		self.archer_count = 0
 		self.range = 100
 		self.inRange = False

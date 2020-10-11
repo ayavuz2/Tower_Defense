@@ -23,6 +23,11 @@ class Button:
 		self.height = self.img.get_height()
 
 	def draw(self, win):
+		"""
+		draws the button image
+		:param win: surface
+		:return: None
+		"""
 		win.blit(self.img, (self.x, self.y))
 
 	def click(self, X, Y):
@@ -38,6 +43,10 @@ class Button:
 		return False
 
 	def update(self):
+		"""
+		updates button position
+		:return: None
+		"""
 		self.x = self.menu.x - self.menu.menu_bg.get_width()/2 + 15
 		self.y = self.menu.y - 105 # 120 - 15
 
@@ -167,5 +176,13 @@ class VerticalMenu(Menu):
 		button_y = self.y + 25 + (self.items - 1) * 90
 		self.buttons.append(VerticalButton(button_x, button_y, img, name, cost))	
 
-	def get_item_cost(self):
-		return Exception("Not implemented")
+	def get_item_cost(self, name):
+		"""
+		gets the cost of the item
+		:param name: str
+		:return: int
+		"""
+		for button in self.buttons:
+			if button.name == name:
+				return button.cost
+		return -1

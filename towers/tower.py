@@ -24,7 +24,7 @@ class Tower:
 		# define menu and buttons
 		self.menu = Menu(self.x, self.y, self, menu_bg, [2000, 5000, 9000, 12000, "MAX"])
 		self.menu.add_button(upgrade_button, "Upgrade")
-
+		self.moving = False
 		self.tower_imgs = []
 		self.damage = 1
 

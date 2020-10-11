@@ -38,6 +38,11 @@ class ArcherTowerLong(Tower):
 		self.menu.add_button(upgrade_button, "Upgrade")
 
 	def draw(self, win):
+		"""
+		draw the archer tower and the animated archer
+		:param win: surface
+		:return: int
+		"""
 		super().draw_radius(win)
 		super().draw(win)
 
@@ -52,6 +57,10 @@ class ArcherTowerLong(Tower):
 		win.blit(archer, (self.x  - (archer.get_width()/2), (self.y - archer.get_height() - 20)))
 
 	def get_upgrade_cost(self):
+		"""
+		gets the upgrade cost
+		:return: int
+		"""
 		return self.menu.get_item_cost()
 
 	def change_range(self, r):
@@ -129,7 +138,7 @@ class ArcherTowerShort(ArcherTowerLong):
 		super().__init__(x, y)
 		self.tower_imgs = tower_imgs2[:]
 		self.archer_imgs = archer_imgs[:]
-		self.name = "archerTower2"
+		self.name = "archer_Tower2"
 		self.archer_total_imgs = len(archer_imgs)
 		self.archer_count = 0
 		self.range = 100
@@ -137,6 +146,7 @@ class ArcherTowerShort(ArcherTowerLong):
 		self.original_range = self.range
 		self.original_damage = self.damage
 		self.left = True
+		self.moving = False
 		self.damage = 2
 		self.animation_speed_multiplier = 2
 		self.menu = Menu(self.x, self.y, self, menu_bg, [2000, 5000, "MAX"])

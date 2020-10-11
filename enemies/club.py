@@ -9,16 +9,14 @@ for x in range(20):
 	if x < 10:
 		add_str = "0" + add_str
 	imgs.append(pygame.transform.scale(
-		pygame.image.load(os.path.join("game_assets/enemies/1", "1_enemies_1_run_0" + add_str + ".png")), (32, 32)))
+		pygame.image.load(os.path.join("game_assets/enemies/3", "3_enemies_1_run_0" + add_str + ".png")), 
+		(64, 64)))
 
-
-class Scorpion(Enemy):
+class Club(Enemy):
 	def __init__(self):
 		super().__init__()
-		self.name = "scorpion"
-		self.money = 1
-		self.max_health = 1
+		self.name = "club"
+		self.money = 5
+		self.max_health = 5
 		self.health = self.max_health
 		self.imgs = imgs[:]
-	
-			

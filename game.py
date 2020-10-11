@@ -4,6 +4,7 @@ import time
 import random
 from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
+from enemies.club import Club
 from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 from towers.supportTower import RangeTower, DamageTower
 from menu.menu import VerticalMenu
@@ -30,15 +31,36 @@ buy_range = pygame.transform.scale(
 attack_tower_names = ["archer_Tower", "archer_Tower2"]
 support_tower_names = ["damage_Tower", "range_Tower"]
 
+# waves are in form
+# frequency of enemies
+# (# scorpions, # wizards, # club)
+waves = [
+	[10, 0, 0],
+	[20, 0, 0],
+	[30, 0, 0],
+	[40, 0, 0],
+	[30, 10, 0],
+	[20, 20, 0],
+	[10, 30, 0],
+	[10, 40, 0],
+	[20, 40, 0],
+	[30, 30, 5],
+	[0, 40, 10],
+	[0, 30, 20],
+	[10, 20, 30],
+	[0, 0, 40],
+	[40, 40, 40]
+]
+
 
 class Game:
 	def __init__(self):
 		self.width = 1100 # 1280
 		self.height = 700 # 720
 		self.win = pygame.display.set_mode((self.width, self.height))
-		self.enemies = [Wizard()]
+		self.enemies = []
 		self.attack_towers = [ArcherTowerLong(300,350)]
-		self.support_towers = [RangeTower(500, 350)]
+		self.support_towers = [DamageTower(300, 500)]
 		self.lives = 10
 		self.money = 2000
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
@@ -46,6 +68,9 @@ class Game:
 		self.timer = time.time()
 		self.life_font = pygame.font.SysFont("comicsans", 50)
 		self.selected_tower = None
+		self.pause = False
+		self.wave = 0
+		self.current_wave = waves[self.wave][:]
 		self.moving_object = None
 		self.menu = VerticalMenu(self.width - side_img.get_width() + 30, 140, side_img)
 		self.menu.add_button(buy_archer, "buy_archer", 500)
@@ -60,10 +85,11 @@ class Game:
 		while run:
 			clock.tick(30)
 
-			# gen monsters
-			if time.time() - self.timer >= random.randrange(2, 5)/2:
-				self.timer = time.time()
-				self.enemies.append(random.choice((Wizard(), Scorpion())))
+			if self.pause == False:
+				# gen monsters
+				if time.time() - self.timer >= random.randrange(2, 5)/2:
+					self.timer = time.time()
+					self.gen_enemies()
 
 			pos = pygame.mouse.get_pos()
 
@@ -81,6 +107,7 @@ class Game:
 
 						if self.moving_object.name in attack_tower_names:
 							self.attack_towers.append(self.moving_object)
+							print("Done")
 
 						elif self.moving_object.name in support_tower_names:
 							self.support_towers.append(self.moving_object)
@@ -93,7 +120,10 @@ class Game:
 						# look if you click on side menu
 						side_menu_button = self.menu.get_clicked(pos[0], pos[1])
 						if side_menu_button:
-							self.add_tower(side_menu_button)
+							cost = self.menu.get_item_cost(side_menu_button)
+							if self.money >= cost:
+								self.money -= cost
+								self.add_tower(side_menu_button)
 
 						# look if you clicked on a attack tower or support tower
 						button_clicked = None
@@ -189,6 +219,23 @@ class Game:
 		self.win.blit(money, (start_x + 5, 60))
 
 		pygame.display.update()
+
+	def gen_enemies(self):
+		"""
+		generate the next enemy or enemies to show
+		:return: enemy
+		"""
+		if sum(self.current_wave) == 0:
+			self.wave += 1
+			self.current_wave = waves[self.wave]
+			self.pause = True
+		else:
+			wave_enemies = [Scorpion(), Wizard(), Club()]
+			for x in range(len(self.current_wave)):
+				if self.current_wave[x] != 0:
+					self.enemies.append(wave_enemies[x])
+					self.current_wave[x] = self.current_wave[x] - 1
+					break
 
 	def add_tower(self, name):
 		x, y = pygame.mouse.get_pos()

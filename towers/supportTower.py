@@ -23,6 +23,7 @@ class RangeTower(Tower):
 		self.range = 150
 		self.original_range = self.range
 		self.effect = [0.2, 0.4]
+		self.effected_towers = []
 		self.tower_imgs = range_imgs[:]
 		self.width, self.height = 96, 128
 
@@ -36,15 +37,15 @@ class RangeTower(Tower):
 		:param towers: list
 		:return: None
 		"""
-		effected = []
 		for tower in towers:
 			x, y = tower.x, tower.y			
 			dis = math.sqrt((self.x - x)**2 + (self.y - y)**2)
 
 			if dis <= self.range + tower.width/2:
-				effected.append(tower)
+				if tower not in self.effected_towers:
+					self.effected_towers.append(tower)
 
-		for tower in effected:
+		for tower in self.effected_towers:
 			tower.range = tower.original_range + round(tower.original_range * self.effect[self.level - 1])
 
 
@@ -60,9 +61,10 @@ class DamageTower(RangeTower):
 	def __init__(self, x, y):
 		super().__init__(x, y)
 		self.name = "damage_Tower"
-		self.range = 10
+		self.range = 100
 		self.original_range = self.range
 		self.effect = [1, 2]
+		self.effected_towers = []
 		self.tower_imgs = damage_imgs[:]
 		self.width = self.height = 90
 
@@ -72,13 +74,13 @@ class DamageTower(RangeTower):
 		:param towers: list
 		:return: None
 		"""
-		effected = []
 		for tower in towers:
 			x, y = tower.x, tower.y			
 			dis = math.sqrt((self.x - x)**2 + (self.y - y)**2)
 
 			if dis <= self.range + tower.width/2:
-				effected.append(tower)
+				if tower not in self.effected_towers:
+					self.effected_towers.append(tower)
 
-		for tower in effected:
-			tower.damage = self.original_damage + self.effect[self.level - 1]
+		for tower in self.effected_towers:
+			tower.damage = tower.original_damage + self.effect[self.level - 1]

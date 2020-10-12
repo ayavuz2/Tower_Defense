@@ -7,7 +7,7 @@ from enemies.wizard import Wizard
 from enemies.club import Club
 from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 from towers.supportTower import RangeTower, DamageTower
-from menu.menu import VerticalMenu
+from menu.menu import VerticalMenu, PlayPauseButton
 pygame.font.init()
 
 
@@ -15,6 +15,9 @@ lives_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "heart.png")), (48,48))
 coin_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "sell.png")), (35, 35))
+
+play_button = pygame.image.load(os.path.join("game_assets", "play.png"))
+pause_button = pygame.image.load(os.path.join("game_assets", "pause.png"))
 
 side_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "menu_vertical.png")), (80, 400))
@@ -68,7 +71,7 @@ class Game:
 		self.timer = time.time()
 		self.life_font = pygame.font.SysFont("comicsans", 50)
 		self.selected_tower = None
-		self.pause = False
+		self.paused = True
 		self.wave = 0
 		self.current_wave = waves[self.wave][:]
 		self.moving_object = None
@@ -77,6 +80,7 @@ class Game:
 		self.menu.add_button(buy_archer2, "buy_archer2", 700)
 		self.menu.add_button(buy_damage, "buy_damage", 1000)
 		self.menu.add_button(buy_range, "buy_range", 1000)
+		self.playPauseButton = PlayPauseButton(play_button, pause_button, 10, self.height - 85)
 
 	def run(self):
 		run = True
@@ -85,7 +89,7 @@ class Game:
 		while run:
 			clock.tick(30)
 
-			if self.pause == False:
+			if self.paused == False:
 				# gen monsters
 				if time.time() - self.timer >= random.randrange(2, 5)/2:
 					self.timer = time.time()
@@ -117,6 +121,11 @@ class Game:
 						self.moving_object = None
 
 					else:
+						# check for play or pause
+						if self.playPauseButton.click(pos[0], pos[1]):
+							self.paused = not(self.paused)
+							self.playPauseButton.paused = self.paused
+
 						# look if you click on side menu
 						side_menu_button = self.menu.get_clicked(pos[0], pos[1])
 						if side_menu_button:
@@ -152,29 +161,31 @@ class Game:
 								else:
 									tw.selected = False
 
-			# loop through enemies
-			to_del = []
-			for en in self.enemies:
-				if en.x < -5:
-					to_del.append(en)
+			if not(self.paused):
+				# loop through enemies
+				to_del = []
+				for en in self.enemies:
+					en.move()
+					if en.x < -5:
+						to_del.append(en)
 
-			# delete all enemies off the screen
-			for d in to_del:
-				self.lives -= 1
-				self.enemies.remove(d)
+				# delete all enemies off the screen
+				for d in to_del:
+					self.lives -= 1
+					self.enemies.remove(d)
 
-			# loop through attack towers
-			for tw in self.attack_towers:
-				self.money += tw.attack(self.enemies)
+				# loop through attack towers
+				for tw in self.attack_towers:
+					self.money += tw.attack(self.enemies)
 
-			# loop through support towers
-			for tw in self.support_towers:
-				tw.support(self.attack_towers) # sending attack towers to see if they are in range of the support tower
+				# loop through support towers
+				for tw in self.support_towers:
+					tw.support(self.attack_towers) # sending attack towers to see if they are in range of the support tower
 
-			# if you lose
-			if self.lives <= 0:
-				print("You Lost")
-				run = False
+				# if you lose
+				if self.lives <= 0:
+					print("You Lost")
+					run = False
 
 			self.draw()
 
@@ -202,6 +213,9 @@ class Game:
 		# draw menu
 		self.menu.draw(self.win)
 
+		# draw play pause button
+		self.playPauseButton.draw(self.win)
+
 		# draw lives
 		text = self.life_font.render(str(self.lives), 1, (255,0,0))
 		life = lives_img
@@ -228,7 +242,7 @@ class Game:
 		if sum(self.current_wave) == 0:
 			self.wave += 1
 			self.current_wave = waves[self.wave]
-			self.pause = True
+			self.paused = True
 		else:
 			wave_enemies = [Scorpion(), Wizard(), Club()]
 			for x in range(len(self.current_wave)):

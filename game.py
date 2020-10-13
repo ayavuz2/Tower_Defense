@@ -19,6 +19,9 @@ coin_img = pygame.transform.scale(
 play_button = pygame.image.load(os.path.join("game_assets", "play.png"))
 pause_button = pygame.image.load(os.path.join("game_assets", "pause.png"))
 
+wave_bg = pygame.transform.scale(
+	pygame.image.load(os.path.join("game_assets", "wave.png")), (180, 56))
+
 side_img = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "menu_vertical.png")), (80, 400))
 
@@ -232,6 +235,11 @@ class Game:
 		self.win.blit(text, (start_x - text.get_width() - 10, 65))
 		self.win.blit(money, (start_x + 5, 60))
 
+		# draw wave
+		self.win.blit(wave_bg, (10, 10))
+		text = self.life_font.render("Wave #" + str(self.wave), 1, (255,255,255))
+		self.win.blit(text,(10 + wave_bg.get_width()//2 - text.get_width()//2, 20))
+
 		pygame.display.update()
 
 	def gen_enemies(self):
@@ -240,9 +248,11 @@ class Game:
 		:return: enemy
 		"""
 		if sum(self.current_wave) == 0:
-			self.wave += 1
-			self.current_wave = waves[self.wave]
-			self.paused = True
+			if len(self.enemies) == 0:
+				self.wave += 1
+				self.current_wave = waves[self.wave]
+				self.paused = True
+				self.playPauseButton.paused = self.paused
 		else:
 			wave_enemies = [Scorpion(), Wizard(), Club()]
 			for x in range(len(self.current_wave)):

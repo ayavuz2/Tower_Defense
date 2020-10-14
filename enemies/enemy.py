@@ -16,7 +16,7 @@ class Enemy:
 		self.x = self.path[0][0]
 		self.y = self.path[0][1]
 		self.path_pos = 0
-		self.dis = 0
+		# self.dis = 0
 		self.move_count = 0
 		self.move_dis = 0
 		self.imgs = []
@@ -72,10 +72,7 @@ class Enemy:
 			self.animation_count = 0
 			
 		x1, y1 = self.path[self.path_pos]
-		if self.path_pos + 1 >= len(self.path):
-			x2, y2 = (-10, 596)
-		else:
-			x2, y2 = self.path[self.path_pos+1]		
+		x2, y2 = self.path[self.path_pos+1]		
 
 		move_dis = math.sqrt((x2-x1)**2 + (y2-y1)**2)
 
@@ -97,7 +94,7 @@ class Enemy:
 				self.check = False
 
 		move_x, move_y = (self.x + dirn[0]*3, self.y + dirn[1]*3) # multiply dirn with int make enemies go faster!
-		self.dis += length
+		# self.dis += length
 
 		self.x = move_x
 		self.y = move_y

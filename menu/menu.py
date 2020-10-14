@@ -126,7 +126,7 @@ class Menu:
 
 	def get_item_cost(self):
 		"""
-		gets cost of upgrade  to next level
+		gets cost of upgrade to next level
 		:return: int
 		"""
 		return self.item_cost[self.tower.level - 1]

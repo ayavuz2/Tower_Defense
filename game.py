@@ -197,6 +197,16 @@ class Game:
 	def draw(self):
 		self.win.blit(self.bg, (0,0))
 
+		# draw placement rings
+		if self.moving_object:
+			for tower in self.attack_towers:
+				tower.draw_placement(self.win)
+
+			for tower in self.support_towers:
+				tower.draw_placement(self.win)
+
+			self.moving_object.draw_placement(self.win)
+
 		# draw attack towers
 		for tw in self.attack_towers:
 			tw.draw(self.win)

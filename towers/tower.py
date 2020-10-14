@@ -1,5 +1,6 @@
 import pygame
 import os
+import math
 from menu.menu import Menu
 
 
@@ -13,8 +14,7 @@ class Tower:
 	def __init__(self, x, y):
 		self.x = x
 		self.y = y
-		self.width = 0
-		self.height = 0
+		self.width = self.height = 96
 		self.sell_price = [0,0,0]
 		self.price = [0,0,0]
 		self.level = 1
@@ -45,9 +45,16 @@ class Tower:
 		# draw range circle if selected
 		if self.selected:	
 			surface = pygame.Surface((self.range*2, self.range*2), pygame.SRCALPHA, 32)
-			pygame.draw.circle(surface, (128,128,128, 100), (self.range, self.range), self.range, 0)
+			pygame.draw.circle(surface, (128, 128, 128, 100), (self.range, self.range), self.range, 0)
 
 			win.blit(surface, (self.x - self.range, self.y - self.range))
+
+	def draw_placement(self, win):
+		# draw range circle
+		surface = pygame.Surface((self.range*2, self.range*2), pygame.SRCALPHA, 32)
+		pygame.draw.circle(surface, (255, 0, 0, 100), (58, 58), 58, 0) # 58 = 96/2 + 10
+
+		win.blit(surface, (self.x - 58, self.y - 58))
 
 	def click(self, X, Y):
 		"""
@@ -81,10 +88,10 @@ class Tower:
 
 	def get_upgrade_cost(self):
 		"""
-		returns the upgrade cost, if 0 then cant upgrade anymore
+		gets the upgrade cost
 		:return: int
 		"""
-		return self.price[self.level - 1]
+		return self.menu.get_item_cost()
 
 	def move(self, x, y):
 		"""
@@ -98,3 +105,11 @@ class Tower:
 		self.menu.x = x
 		self.menu.y = y
 		self.menu.update()
+
+	def collide(self, otherTower):
+		x2 = otherTower.x
+		y2 = otherTower.y
+
+		dis = math.sqrt((x2 - self.x)**2 - (y2 - self.y)**2)
+
+		return False if dis <= 96 else True # width and height of the towers are equals to 96

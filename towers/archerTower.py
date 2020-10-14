@@ -56,13 +56,6 @@ class ArcherTowerLong(Tower):
 		archer = self.archer_imgs[self.archer_count//self.animation_speed_multiplier]
 		win.blit(archer, (self.x  - (archer.get_width()/2), (self.y - archer.get_height() - 20)))
 
-	def get_upgrade_cost(self):
-		"""
-		gets the upgrade cost
-		:return: int
-		"""
-		return self.menu.get_item_cost()
-
 	def change_range(self, r):
 		"""
 		change range of archer tower

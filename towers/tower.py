@@ -110,6 +110,6 @@ class Tower:
 		x2 = otherTower.x
 		y2 = otherTower.y
 
-		dis = math.sqrt((x2 - self.x)**2 - (y2 - self.y)**2)
+		dis = math.sqrt((x2 - self.x)**2 + (y2 - self.y)**2)
 
-		return False if dis <= 96 else True # width and height of the towers are equals to 96
+		return True if dis <= 116 else False # width and height of the towers are equals to 96 and adding 10 from both sides = 116

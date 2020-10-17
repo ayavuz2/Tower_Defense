@@ -1,5 +1,6 @@
 import pygame
 import os
+import math
 import time
 import random
 from enemies.scorpion import Scorpion
@@ -37,25 +38,18 @@ buy_range = pygame.transform.scale(
 attack_tower_names = ["archer_Tower", "archer_Tower2"]
 support_tower_names = ["damage_Tower", "range_Tower"]
 
+path = [(60, 110), (157, 110), (287, 110), (414, 110), (543, 110), (671, 110), (797, 110), (912, 110),
+ (915, 190), (916, 255), (917, 270), (834, 270), (737, 270), (641, 270), (542, 270), (380, 270), (276, 270),
+  (140, 270), (144, 353), (145, 432), (250, 432), (351, 432), (479, 432), (589, 432), (677, 432), (757, 432),
+   (846, 432), (914, 432), (915, 515), (914, 594), (832, 594), (736, 594), (661, 594), (556, 594), (445, 594),
+    (339, 594), (215, 594), (88, 594), (58, 594)]
+
 # waves are in form
 # frequency of enemies
-# (# scorpions, # wizards, # club)
+# (# scorpion, # wizard, # club)
 waves = [
-	[10, 0, 0],
-	[20, 0, 0],
-	[30, 0, 0],
-	[40, 0, 0],
-	[30, 10, 0],
-	[20, 20, 0],
-	[10, 30, 0],
-	[10, 40, 0],
-	[20, 40, 0],
-	[30, 30, 5],
-	[0, 40, 10],
-	[0, 30, 20],
-	[10, 20, 30],
-	[0, 0, 40],
-	[40, 40, 40]
+	[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0], [30, 10, 0], [20, 20, 0], [10, 30, 0],
+	 [10, 40, 0], [20, 40, 0], [30, 30, 5], [0, 40, 10], [0, 30, 20], [10, 20, 30], [0, 0, 40], [40, 40, 40]
 ]
 
 
@@ -88,7 +82,7 @@ class Game:
 	def run(self):
 		run = True
 		clock = pygame.time.Clock()
-				
+
 		while run:
 			clock.tick(30)
 
@@ -109,19 +103,26 @@ class Game:
 					run = False
 
 				if event.type == pygame.MOUSEBUTTONDOWN:
+					# print(pos[0], pos[1])
 					# if you are moving an object and click
 					if self.moving_object:
+						not_allowed = False
+						tower_list = self.attack_towers[:] + self.support_towers[:]
+						for tower in tower_list:
+							if tower.collide(self.moving_object):
+								not_allowed = True
 
-						if self.moving_object.name in attack_tower_names:
-							self.attack_towers.append(self.moving_object)
-							print("Done")
+						if not not_allowed and self.point_to_line(self.moving_object):
+							if self.moving_object.name in attack_tower_names:
+								self.attack_towers.append(self.moving_object)
+								print("Done")
 
-						elif self.moving_object.name in support_tower_names:
-							self.support_towers.append(self.moving_object)
-						
-						# self.moving_object.x = pos
-						self.moving_object.moving = False
-						self.moving_object = None
+							elif self.moving_object.name in support_tower_names:
+								self.support_towers.append(self.moving_object)
+							
+							# self.moving_object.x = pos
+							self.moving_object.moving = False
+							self.moving_object = None
 
 					else:
 						# check for play or pause
@@ -192,6 +193,12 @@ class Game:
 
 			self.draw()
 
+			"""for point in path:
+				pygame.draw.circle(self.win, (255,0,0), (point[0], point[1]), 5)
+
+			pygame.display.update()
+			"""
+
 		pygame.quit()
 
 	def draw(self):
@@ -251,6 +258,32 @@ class Game:
 		self.win.blit(text,(10 + wave_bg.get_width()//2 - text.get_width()//2, 20))
 
 		pygame.display.update()
+
+	def point_to_line(self, tower):
+		"""
+		returns if you can place tower based on distance from path
+		:param tower: Tower
+		:return: Bool
+		"""
+		# find two closest points
+		closest = []
+		for point in path:
+			dis = math.sqrt((tower.x - point[0])**2 + (tower.y - point[1])**2)
+			closest.append([dis, point])
+
+		closest.sort(key=lambda x: x[0])
+		closest1 = closest[0][1] # (x1, y1)
+		closest2 = closest[1][1] # (x2, y2)
+
+		slope = (closest2[1] - closest1[1]) / (closest2[0] - closest1[0]) # (y2-y1) / (x2-x1)
+		A = slope
+		B = -1
+		C = closest1[1] - slope*closest1[0]
+
+		dis = abs(A*tower.x + B*tower.y + C) / math.sqrt(A**2 + B**2)
+		# print(dis, closest1, closest2, (tower.x, tower.y))
+
+		return True
 
 	def gen_enemies(self):
 		"""

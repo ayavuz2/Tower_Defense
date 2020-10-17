@@ -20,7 +20,7 @@ class RangeTower(Tower):
 	def __init__(self, x, y):
 		super().__init__(x, y)
 		self.name = "range_Tower"
-		self.range = 150
+		self.range = 200
 		self.original_range = self.range
 		self.effect = [0.2, 0.4]
 		self.effected_towers = []
@@ -61,7 +61,7 @@ class DamageTower(RangeTower):
 	def __init__(self, x, y):
 		super().__init__(x, y)
 		self.name = "damage_Tower"
-		self.range = 100
+		self.range = 200
 		self.original_range = self.range
 		self.effect = [1, 2]
 		self.effected_towers = []

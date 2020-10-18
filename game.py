@@ -38,11 +38,16 @@ buy_range = pygame.transform.scale(
 attack_tower_names = ["archer_Tower", "archer_Tower2"]
 support_tower_names = ["damage_Tower", "range_Tower"]
 
-path = [(60, 110), (157, 110), (287, 110), (414, 110), (543, 110), (671, 110), (797, 110), (912, 110),
- (915, 190), (916, 255), (917, 270), (834, 270), (737, 270), (641, 270), (542, 270), (380, 270), (276, 270),
-  (140, 270), (144, 353), (145, 432), (250, 432), (351, 432), (479, 432), (589, 432), (677, 432), (757, 432),
-   (846, 432), (914, 432), (915, 515), (914, 594), (832, 594), (736, 594), (661, 594), (556, 594), (445, 594),
-    (339, 594), (215, 594), (88, 594), (58, 594)]
+path = [(27, 172), (91, 171), (155, 170), (218, 170), (263, 172), (290, 201),
+ (348, 203), (411, 203), (475, 202), (539, 203), (604, 203), (668, 203), (731, 203),
+  (794, 203), (858, 204), (893, 172), (922, 140), (956, 108), (1019, 108), (1083, 107),
+   (1115, 140), (1147, 173), (1165, 189), (1165, 251), (1165, 317), (1165, 358), (1135, 372),
+    (1095, 395), (1062, 428), (1007, 428), (940, 428), (875, 428), (810, 428), (746, 428),
+     (681, 428), (615, 428), (553, 428), (488, 428), (424, 428), (374, 428), (355, 396), (308, 396), (294, 364),
+      (231, 364), (181, 364), (168, 396), (140, 396), (140, 460), (140, 524), (140, 587), (204, 588), (268, 588),
+       (333, 588), (398, 588), (461, 588), (525, 588), (550, 588), (562, 620), (585, 620), (594, 650), (654, 650),
+        (713, 650), (743, 650), (765, 620), (788, 588), (844, 588), (908, 588), (967, 588), (975, 620), (1036, 620),
+         (1097, 620), (1162, 620), (1226, 620), (1293, 620), (1360, 620)]
 
 # waves are in form
 # frequency of enemies
@@ -55,16 +60,16 @@ waves = [
 
 class Game:
 	def __init__(self):
-		self.width = 1100 # 1280
-		self.height = 700 # 720
+		self.width = 1366 # 1280
+		self.height = 768 # 720
 		self.win = pygame.display.set_mode((self.width, self.height))
 		self.enemies = []
-		self.attack_towers = [ArcherTowerLong(300,350)]
-		self.support_towers = [DamageTower(300, 500)]
+		self.attack_towers = []
+		self.support_towers = []
 		self.lives = 10
 		self.money = 2000
 		self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
-		self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
+		# self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
 		self.timer = time.time()
 		self.life_font = pygame.font.SysFont("comicsans", 50)
 		self.selected_tower = None
@@ -170,7 +175,7 @@ class Game:
 				to_del = []
 				for en in self.enemies:
 					en.move()
-					if en.x < -5:
+					if en.x > 1340:
 						to_del.append(en)
 
 				# delete all enemies off the screen
@@ -193,7 +198,8 @@ class Game:
 
 			self.draw()
 
-			"""for point in path:
+			"""
+			for point in path:
 				pygame.draw.circle(self.win, (255,0,0), (point[0], point[1]), 5)
 
 			pygame.display.update()
@@ -281,7 +287,7 @@ class Game:
 		C = closest1[1] - slope*closest1[0]
 
 		dis = abs(A*tower.x + B*tower.y + C) / math.sqrt(A**2 + B**2)
-		# print(dis, closest1, closest2, (tower.x, tower.y))
+		print(dis, closest1, closest2, (tower.x, tower.y))
 
 		return True
 

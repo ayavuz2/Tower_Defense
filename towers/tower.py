@@ -27,6 +27,7 @@ class Tower:
 		self.moving = False
 		self.tower_imgs = []
 		self.damage = 1
+		self.place_color = (0,0,255, 100)
 
 	def draw(self, win):
 		"""
@@ -52,7 +53,7 @@ class Tower:
 	def draw_placement(self, win):
 		# draw range circle
 		surface = pygame.Surface((self.range*2, self.range*2), pygame.SRCALPHA, 32)
-		pygame.draw.circle(surface, (255, 0, 0, 100), (58, 58), 58, 0) # 58 = 96/2 + 10
+		pygame.draw.circle(surface, self.place_color, (58, 58), 58, 0) # 58 = 96/2 + 10
 
 		win.blit(surface, (self.x - 58, self.y - 58))
 

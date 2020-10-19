@@ -42,12 +42,12 @@ path = [(27, 172), (91, 171), (155, 170), (218, 170), (263, 172), (290, 201),
  (348, 203), (411, 203), (475, 202), (539, 203), (604, 203), (668, 203), (731, 203),
   (794, 203), (858, 204), (893, 172), (922, 140), (956, 108), (1019, 108), (1083, 107),
    (1115, 140), (1147, 173), (1165, 189), (1165, 251), (1165, 317), (1165, 358), (1135, 372),
-    (1095, 395), (1062, 428), (1007, 428), (940, 428), (875, 428), (810, 428), (746, 428),
-     (681, 428), (615, 428), (553, 428), (488, 428), (424, 428), (374, 428), (355, 396), (308, 396), (294, 364),
-      (231, 364), (181, 364), (168, 396), (140, 396), (140, 460), (140, 524), (140, 587), (204, 588), (268, 588),
-       (333, 588), (398, 588), (461, 588), (525, 588), (550, 588), (562, 620), (585, 620), (594, 650), (654, 650),
-        (713, 650), (743, 650), (765, 620), (788, 588), (844, 588), (908, 588), (967, 588), (975, 620), (1036, 620),
-         (1097, 620), (1162, 620), (1226, 620), (1293, 620), (1360, 620)]
+    (1095, 395), (1062, 428), (1007, 428), (940, 428), (875, 428), (810, 428), (746, 428), (681, 428),
+     (615, 428), (553, 428), (488, 428), (424, 428), (374, 428), (355, 396), (308, 396), (294, 364), (231, 364),
+      (181, 364), (168, 396), (140, 396), (140, 460), (140, 524), (140, 587), (204, 588), (268, 588), (333, 588),
+       (398, 588), (461, 588), (525, 588), (550, 588), (562, 620), (585, 620), (594, 650), (654, 650), (713, 650),
+        (743, 650), (765, 620), (788, 588), (844, 588), (908, 588), (967, 588), (975, 620), (1036, 620),(1097, 620),
+         (1162, 620), (1226, 620), (1293, 620), (1360, 620)]
 
 # waves are in form
 # frequency of enemies
@@ -60,8 +60,8 @@ waves = [
 
 class Game:
 	def __init__(self):
-		self.width = 1366 # 1280
-		self.height = 768 # 720
+		self.width = 1366
+		self.height = 768
 		self.win = pygame.display.set_mode((self.width, self.height))
 		self.enemies = []
 		self.attack_towers = []
@@ -102,6 +102,17 @@ class Game:
 			# check for moving object
 			if self.moving_object:
 				self.moving_object.move(pos[0], pos[1])
+				collide = False
+				tower_list = self.attack_towers[:] + self.support_towers[:]
+				for tower in tower_list:
+					if tower.collide(self.moving_object):
+						collide = True
+						tower.place_color = (255,0,0, 100)
+						self.moving_object.place_color = (255,0,0, 100)
+					else:
+						tower.place_color = (0,0,255, 100)
+						if not(collide):
+							self.moving_object.place_color = (0,0,255, 100)
 
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -120,14 +131,14 @@ class Game:
 						if not not_allowed and self.point_to_line(self.moving_object):
 							if self.moving_object.name in attack_tower_names:
 								self.attack_towers.append(self.moving_object)
-								print("Done")
 
 							elif self.moving_object.name in support_tower_names:
 								self.support_towers.append(self.moving_object)
 							
-							# self.moving_object.x = pos
 							self.moving_object.moving = False
 							self.moving_object = None
+							# print([tower.name for tower in self.attack_towers[:]])
+							print("Done")
 
 					else:
 						# check for play or pause
@@ -198,12 +209,12 @@ class Game:
 
 			self.draw()
 
-			"""
+			
 			for point in path:
 				pygame.draw.circle(self.win, (255,0,0), (point[0], point[1]), 5)
 
 			pygame.display.update()
-			"""
+			
 
 		pygame.quit()
 
@@ -232,6 +243,10 @@ class Game:
 		for en in self.enemies:
 			en.draw(self.win)
 
+		# redraw selected tower
+		if self.selected_tower:
+			self.selected_tower.draw(self.win)
+		
 		# draw moving object
 		if self.moving_object:
 			self.moving_object.draw(self.win)
@@ -281,15 +296,21 @@ class Game:
 		closest1 = closest[0][1] # (x1, y1)
 		closest2 = closest[1][1] # (x2, y2)
 
-		slope = (closest2[1] - closest1[1]) / (closest2[0] - closest1[0]) # (y2-y1) / (x2-x1)
-		A = slope
-		B = -1
-		C = closest1[1] - slope*closest1[0]
+		try:
+			slope = (closest2[1] - closest1[1]) / (closest2[0] - closest1[0]) # (y2-y1) / (x2-x1)
+			A = slope
+			B = -1
+			C = closest1[1] - slope*closest1[0]
+		except ZeroDivisionError:
+			slope = 0
+			A = -1
+			B = slope
+			C = closest1[0] - slope*closest1[1]
 
 		dis = abs(A*tower.x + B*tower.y + C) / math.sqrt(A**2 + B**2)
-		print(dis, closest1, closest2, (tower.x, tower.y))
+		# print(dis, closest1, closest2, (tower.x, tower.y))
 
-		return True
+		return True if dis >= tower.width//2 + 10 else False
 
 	def gen_enemies(self):
 		"""

@@ -6,12 +6,12 @@ path = [(27, 172), (91, 171), (155, 170), (218, 170), (263, 172), (290, 201),
  (348, 203), (411, 203), (475, 202), (539, 203), (604, 203), (668, 203), (731, 203),
   (794, 203), (858, 204), (893, 172), (922, 140), (956, 108), (1019, 108), (1083, 107),
    (1115, 140), (1147, 173), (1165, 189), (1165, 251), (1165, 317), (1165, 358), (1135, 372),
-    (1095, 395), (1062, 428), (1007, 428), (940, 428), (875, 428), (810, 428), (746, 428),
-     (681, 428), (615, 428), (553, 428), (488, 428), (424, 428), (374, 428), (355, 396), (308, 396), (294, 364),
-      (231, 364), (181, 364), (168, 396), (140, 396), (140, 460), (140, 524), (140, 587), (204, 588), (268, 588),
-       (333, 588), (398, 588), (461, 588), (525, 588), (550, 588), (562, 620), (585, 620), (594, 650), (654, 650),
-        (713, 650), (743, 650), (765, 620), (788, 588), (844, 588), (908, 588), (967, 588), (975, 620), (1036, 620),
-         (1097, 620), (1162, 620), (1226, 620), (1293, 620), (1360, 620)]
+    (1095, 395), (1062, 428), (1007, 428), (940, 428), (875, 428), (810, 428), (746, 428), (681, 428),
+     (615, 428), (553, 428), (488, 428), (424, 428), (374, 428), (355, 396), (308, 396), (294, 364), (231, 364),
+      (181, 364), (168, 396), (140, 396), (140, 460), (140, 524), (140, 587), (204, 588), (268, 588), (333, 588),
+       (398, 588), (461, 588), (525, 588), (550, 588), (562, 620), (585, 620), (594, 650), (654, 650), (713, 650),
+        (743, 650), (765, 620), (788, 588), (844, 588), (908, 588), (967, 588), (975, 620), (1036, 620),(1097, 620),
+         (1162, 620), (1226, 620), (1293, 620), (1360, 620)]
 
 
 class Enemy:
@@ -117,46 +117,38 @@ class Enemy:
 				if self.x >= x2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 			elif dirn[1] > 0: # moving down
 				if self.x >= x2 and self.y >= y2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 			else: # moving up
 				if self.x >= x2 and self.y <= y2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 
 		elif dirn[0] < 0: # moving left
 			if dirn[1] == 0: # moving left only
 				if self.x <= x2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 			elif dirn[1] > 0: # moving down
 				if self.x <= x2 and self.y >= y2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 			else: # moving up 
 				if self.x <= x2 and self.y <= y2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 		
 		else: # dirn[0] == 0 which means moving up or down only
 			if dirn[1] > 0: # moving down
 				if self.y >= y2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 			else: # moving up
 				if self.y <= y2:
 					self.path_pos += 1
 					self.check = True
-					print(self.path[self.path_pos+1])
 
 	def flip_imgs(self):
 		for x, img in enumerate(self.imgs):

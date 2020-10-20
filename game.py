@@ -6,10 +6,12 @@ import random
 from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
 from enemies.club import Club
+from enemies.enemy import path
 from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 from towers.supportTower import RangeTower, DamageTower
 from menu.menu import VerticalMenu, PlayPauseButton
 pygame.font.init()
+pygame.init()
 
 
 lives_img = pygame.transform.scale(
@@ -19,6 +21,9 @@ coin_img = pygame.transform.scale(
 
 play_button = pygame.image.load(os.path.join("game_assets", "play.png"))
 pause_button = pygame.image.load(os.path.join("game_assets", "pause.png"))
+
+unmute_button = pygame.image.load(os.path.join("game_assets", "unmute.png"))
+mute_button = pygame.image.load(os.path.join("game_assets", "mute.png")) 
 
 wave_bg = pygame.transform.scale(
 	pygame.image.load(os.path.join("game_assets", "wave.png")), (180, 56))
@@ -38,16 +43,10 @@ buy_range = pygame.transform.scale(
 attack_tower_names = ["archer_Tower", "archer_Tower2"]
 support_tower_names = ["damage_Tower", "range_Tower"]
 
-path = [(27, 172), (91, 171), (155, 170), (218, 170), (263, 172), (290, 201),
- (348, 203), (411, 203), (475, 202), (539, 203), (604, 203), (668, 203), (731, 203),
-  (794, 203), (858, 204), (893, 172), (922, 140), (956, 108), (1019, 108), (1083, 107),
-   (1115, 140), (1147, 173), (1165, 189), (1165, 251), (1165, 317), (1165, 358), (1135, 372),
-    (1095, 395), (1062, 428), (1007, 428), (940, 428), (875, 428), (810, 428), (746, 428), (681, 428),
-     (615, 428), (553, 428), (488, 428), (424, 428), (374, 428), (355, 396), (308, 396), (294, 364), (231, 364),
-      (181, 364), (168, 396), (140, 396), (140, 460), (140, 524), (140, 587), (204, 588), (268, 588), (333, 588),
-       (398, 588), (461, 588), (525, 588), (550, 588), (562, 620), (585, 620), (594, 650), (654, 650), (713, 650),
-        (743, 650), (765, 620), (788, 588), (844, 588), (908, 588), (967, 588), (975, 620), (1036, 620),(1097, 620),
-         (1162, 620), (1226, 620), (1293, 620), (1360, 620)]
+PATH = path
+
+# load music
+pygame.mixer.music.load(os.path.join("game_assets", "music1.mp3"))
 
 # waves are in form
 # frequency of enemies
@@ -59,10 +58,10 @@ waves = [
 
 
 class Game:
-	def __init__(self):
+	def __init__(self, win):
 		self.width = 1366
 		self.height = 768
-		self.win = pygame.display.set_mode((self.width, self.height))
+		self.win = win
 		self.enemies = []
 		self.attack_towers = []
 		self.support_towers = []
@@ -74,6 +73,7 @@ class Game:
 		self.life_font = pygame.font.SysFont("comicsans", 50)
 		self.selected_tower = None
 		self.paused = True
+		self.music_off = True
 		self.wave = 0
 		self.current_wave = waves[self.wave][:]
 		self.moving_object = None
@@ -83,6 +83,7 @@ class Game:
 		self.menu.add_button(buy_damage, "buy_damage", 1000)
 		self.menu.add_button(buy_range, "buy_range", 1000)
 		self.playPauseButton = PlayPauseButton(play_button, pause_button, 10, self.height - 85)
+		self.musicButton = PlayPauseButton(unmute_button, mute_button, 84, self.height - 85)
 
 	def run(self):
 		run = True
@@ -145,6 +146,16 @@ class Game:
 						if self.playPauseButton.click(pos[0], pos[1]):
 							self.paused = not(self.paused)
 							self.playPauseButton.paused = self.paused
+
+						# check for mute or unmute
+						if self.musicButton.click(pos[0], pos[1]):
+							self.music_off = not(self.music_off)
+							self.musicButton.paused = self.music_off
+							if self.music_off:
+								pygame.mixer.music.pause()
+							else:
+								pygame.mixer.music.play()
+								
 
 						# look if you click on side menu
 						side_menu_button = self.menu.get_clicked(pos[0], pos[1])
@@ -209,12 +220,12 @@ class Game:
 
 			self.draw()
 
-			
-			for point in path:
+			"""
+			for point in PATH:
 				pygame.draw.circle(self.win, (255,0,0), (point[0], point[1]), 5)
 
 			pygame.display.update()
-			
+			"""
 
 		pygame.quit()
 
@@ -235,7 +246,7 @@ class Game:
 		for tw in self.attack_towers:
 			tw.draw(self.win)
 		
-		# draw range towers
+		# draw support towers
 		for tw in self.support_towers:
 			tw.draw(self.win)
 
@@ -256,6 +267,9 @@ class Game:
 
 		# draw play pause button
 		self.playPauseButton.draw(self.win)
+
+		# draw music toggle button
+		self.musicButton.draw(self.win)
 
 		# draw lives
 		text = self.life_font.render(str(self.lives), 1, (255,0,0))
@@ -288,7 +302,7 @@ class Game:
 		"""
 		# find two closest points
 		closest = []
-		for point in path:
+		for point in PATH:
 			dis = math.sqrt((tower.x - point[0])**2 + (tower.y - point[1])**2)
 			closest.append([dis, point])
 
@@ -344,5 +358,6 @@ class Game:
 			print(str(e) + "NOT VALID NAME!")
 
 
-g = Game()
+win = pygame.display.set_mode((1366, 768))
+g = Game(win)
 g.run()

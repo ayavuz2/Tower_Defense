@@ -66,7 +66,7 @@ class VerticalButton(Button):
 
 
 class PlayPauseButton(Button):
-	def __init__(self, play_img, pause_img, x, y):
+	def __init__(self, play_img, pause_img, x, y, paused=True):
 		self.img = pause_img
 		self.play = play_img
 		self.pause = pause_img
@@ -74,7 +74,7 @@ class PlayPauseButton(Button):
 		self.y = y
 		self.width = self.img.get_width()
 		self.height = self.img.get_height()
-		self.paused = True
+		self.paused = paused
 
 	def draw(self, win):
 		if self.paused:

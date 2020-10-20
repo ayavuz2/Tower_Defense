@@ -105,7 +105,7 @@ class Enemy:
 				self.left = False
 				self.check = False
 
-		move_x, move_y = (self.x + dirn[0]*3, self.y + dirn[1]*3) # multiply dirn with int make enemies go faster!
+		move_x, move_y = (self.x + dirn[0]*5, self.y + dirn[1]*5) # multiply dirn with int make enemies go faster!
 		# self.moved_dis += length
 
 		self.x = move_x

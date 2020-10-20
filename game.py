@@ -47,6 +47,8 @@ PATH = path
 
 # load music
 pygame.mixer.music.load(os.path.join("game_assets", "music1.mp3"))
+pygame.mixer.music.play()
+pygame.mixer.music.pause()
 
 # waves are in form
 # frequency of enemies
@@ -154,7 +156,7 @@ class Game:
 							if self.music_off:
 								pygame.mixer.music.pause()
 							else:
-								pygame.mixer.music.play()
+								pygame.mixer.music.unpause()
 								
 
 						# look if you click on side menu
@@ -356,8 +358,3 @@ class Game:
 			obj.moving = True
 		except Exception as e:
 			print(str(e) + "NOT VALID NAME!")
-
-
-win = pygame.display.set_mode((1366, 768))
-g = Game(win)
-g.run()

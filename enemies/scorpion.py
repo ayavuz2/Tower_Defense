@@ -20,5 +20,4 @@ class Scorpion(Enemy):
 		self.max_health = 1
 		self.health = self.max_health
 		self.imgs = imgs[:]
-	
 			

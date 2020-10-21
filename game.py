@@ -6,6 +6,7 @@ import random
 from enemies.scorpion import Scorpion
 from enemies.wizard import Wizard
 from enemies.club import Club
+from enemies.boss import Boss
 from enemies.enemy import path
 from towers.archerTower import ArcherTowerLong, ArcherTowerShort
 from towers.supportTower import RangeTower, DamageTower
@@ -52,10 +53,10 @@ pygame.mixer.music.pause()
 
 # waves are in form
 # frequency of enemies
-# (# scorpion, # wizard, # club)
+# (# scorpion, # wizard, # club, # boss)
 waves = [
-	[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0], [30, 10, 0], [20, 20, 0], [10, 30, 0],
-	 [10, 40, 0], [20, 40, 0], [30, 30, 5], [0, 40, 10], [0, 30, 20], [10, 20, 30], [0, 0, 40], [40, 40, 40]
+	[10, 0, 0, 0], [20, 0, 0, 0], [30, 0, 0, 0], [40, 0, 0, 0], [30, 10, 0, 1], [20, 20, 0, 0], [10, 30, 0, 0],
+	 [10, 40, 0, 0], [20, 40, 0, 0], [30, 30, 5, 1], [0, 40, 10, 0], [0, 30, 20, 0], [10, 20, 30, 0], [0, 0, 40, 0], [40, 40, 40, 1]
 ]
 
 
@@ -231,8 +232,6 @@ class Game:
 			pygame.display.update()
 			"""
 
-		pygame.quit()
-
 	def draw(self):
 		self.win.blit(self.bg, (0,0))
 
@@ -350,7 +349,7 @@ class Game:
 				self.paused = True
 				self.playPauseButton.paused = self.paused
 		else:
-			wave_enemies = [Scorpion(), Wizard(), Club()]
+			wave_enemies = [Scorpion(), Wizard(), Club(), Boss()]
 			for x in range(len(self.current_wave)):
 				if self.current_wave[x] != 0:
 					self.enemies.append(wave_enemies[x])

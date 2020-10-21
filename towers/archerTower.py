@@ -124,7 +124,7 @@ for x in range(10):
 		archer_imgs.append(pygame.transform.scale(
 			pygame.image.load(os.path.join("game_assets/towers/archer_towers/archers/archer_2", str(x) + ".png")), 
 			(128, 64)))
-print(len(archer_imgs))
+
 
 class ArcherTowerShort(ArcherTowerLong):
 	def __init__(self, x, y):

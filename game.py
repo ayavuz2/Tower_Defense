@@ -142,6 +142,8 @@ class Game:
 							self.moving_object = None
 							# print([tower.name for tower in self.attack_towers[:]])
 							print("Done")
+						else:
+							print("Not allowed!")
 
 					else:
 						# check for play or pause
@@ -311,6 +313,14 @@ class Game:
 		closest.sort(key=lambda x: x[0])
 		closest1 = closest[0][1] # (x1, y1)
 		closest2 = closest[1][1] # (x2, y2)
+
+		i = 2
+		while True:
+			closest2 = closest[i][1]
+			if abs(PATH.index(closest1)-PATH.index(closest2)) != 1:
+				i += 1
+			else:
+				break
 
 		try:
 			slope = (closest2[1] - closest1[1]) / (closest2[0] - closest1[0]) # (y2-y1) / (x2-x1)
